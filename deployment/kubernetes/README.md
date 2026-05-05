@@ -49,7 +49,7 @@ The overlays use architecture-specific container images:
 
 The vLLM server will:
 - Serve an OpenAI-compatible API on port 8000
-- Mount model cache at `/cache/huggingface`
+- Mount model cache at `/root/.cache/huggingface`
 - Use the HF token for authentication
 
 ### Step 2: Install Llama Stack Operator
