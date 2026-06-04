@@ -464,7 +464,6 @@ To migrate the existing demos:
 
 1. **Preserve existing complex demos**:
    - Move `demos/rag_agentic/` → `demos/07-end-to-end-apps/knowledge_assistant/`
-   - Move `demos/a2a_ogx/` → `demos/05-multi-agent/04_agent_fleet/`
 
 2. **Extract building blocks**:
    - Extract concepts from `tests/scripts/0_simple_agent.py` → Phase 2 demos
