@@ -3,7 +3,7 @@ Demo: Responses API - top_p (Nucleus Sampling)
 
 Description:
 This demo shows how to use the top_p parameter with the OpenAI Responses API
-against a Llama Stack server. The top_p parameter controls nucleus sampling,
+against a OGX server. The top_p parameter controls nucleus sampling,
 where the model considers only tokens whose cumulative probability mass
 reaches the specified threshold.
 
@@ -57,7 +57,7 @@ def main(
 
     client = OpenAI(
         base_url=f"{scheme}://{host}:{port}/v1",
-        api_key=os.getenv("LLAMA_STACK_API_KEY", "fake"),
+        api_key=os.getenv("OGX_API_KEY", "fake"),
     )
 
     resolved_model = resolve_openai_model(client, model_id)

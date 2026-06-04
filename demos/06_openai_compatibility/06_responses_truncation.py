@@ -3,7 +3,7 @@ Demo: Responses API - truncation
 
 Description:
 This demo shows how to use the truncation parameter with the OpenAI Responses
-API against a Llama Stack server. The truncation parameter controls how the
+API against a OGX server. The truncation parameter controls how the
 model handles context that exceeds the context window, allowing automatic
 truncation of older messages.
 
@@ -57,7 +57,7 @@ def main(
 
     client = OpenAI(
         base_url=f"{scheme}://{host}:{port}/v1",
-        api_key=os.getenv("LLAMA_STACK_API_KEY", "fake"),
+        api_key=os.getenv("OGX_API_KEY", "fake"),
     )
 
     resolved_model = resolve_openai_model(client, model_id)
@@ -66,7 +66,7 @@ def main(
     print(f"Using model: {resolved_model}")
 
     # --- Example 1: Auto truncation (truncate older messages if context is too long) ---
-    # Note: truncation='auto' is not yet supported by Llama Stack.
+    # Note: truncation='auto' is not yet supported by OGX.
     print(colored("\n--- truncation='auto' ---", "cyan"))
     try:
         response = client.responses.create(

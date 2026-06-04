@@ -3,10 +3,15 @@ from pathlib import Path
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
-from llama_stack_client import LlamaStackClient
+from ogx_client import OgxClient
 from termcolor import colored
 
 _ALLOWED_SCHEMES = {"http", "https"}
+
+
+def _list_models(client: OgxClient) -> list:
+    resp = client.models.list()
+    return resp.data if hasattr(resp, "data") else list(resp)
 
 
 def _get_model_type(model) -> str | None:
@@ -42,10 +47,10 @@ def resolve_openai_model(client, model_id: str | None) -> str | None:
 
     Works with any OpenAI-compatible client that exposes ``client.models.list()``.
     """
-    resolved = model_id or os.getenv("LLAMA_STACK_MODEL")
+    resolved = model_id or os.getenv("OGX_MODEL")
     if resolved:
         return resolved
-    models = client.models.list()
+    models = _list_models(client)
     for m in models:
         candidate = _get_model_id(m)
         if not candidate:
@@ -57,10 +62,10 @@ def resolve_openai_model(client, model_id: str | None) -> str | None:
     return None
 
 
-def check_model_is_available(client: LlamaStackClient, model: str) -> bool:
+def check_model_is_available(client: OgxClient, model: str) -> bool:
     available_models = [
         model_id
-        for m in client.models.list()
+        for m in _list_models(client)
         for model_id in [_get_model_id(m)]
         if model_id and _is_llm_model(m) and "guard" not in model_id
     ]
@@ -77,10 +82,10 @@ def check_model_is_available(client: LlamaStackClient, model: str) -> bool:
     return True
 
 
-def get_any_available_model(client: LlamaStackClient):
+def get_any_available_model(client: OgxClient):
     available_models = [
         model_id
-        for m in client.models.list()
+        for m in _list_models(client)
         for model_id in [_get_model_id(m)]
         if model_id and _is_llm_model(m) and "guard" not in model_id
     ]
@@ -91,7 +96,7 @@ def get_any_available_model(client: LlamaStackClient):
     return available_models[0]
 
 
-def can_model_chat(client: LlamaStackClient, model_id: str) -> bool:
+def can_model_chat(client: OgxClient, model_id: str) -> bool:
     # Lightweight probe to ensure the model supports chat completions.
     try:
         client.chat.completions.create(
@@ -104,10 +109,10 @@ def can_model_chat(client: LlamaStackClient, model_id: str) -> bool:
     return True
 
 
-def get_any_available_chat_model(client: LlamaStackClient):
+def get_any_available_chat_model(client: OgxClient):
     available_models = [
         model_id
-        for m in client.models.list()
+        for m in _list_models(client)
         for model_id in [_get_model_id(m)]
         if model_id and _is_llm_model(m) and "guard" not in model_id
     ]
@@ -123,10 +128,10 @@ def get_any_available_chat_model(client: LlamaStackClient):
     return None
 
 
-def get_any_available_embedding_model(client: LlamaStackClient) -> str | None:
+def get_any_available_embedding_model(client: OgxClient) -> str | None:
     embedding_models = [
         model_id
-        for m in client.models.list()
+        for m in _list_models(client)
         for model_id in [_get_model_id(m)]
         if model_id
         and (
@@ -141,7 +146,16 @@ def get_any_available_embedding_model(client: LlamaStackClient) -> str | None:
     return embedding_models[0]
 
 
-def get_embedding_dimension(client: LlamaStackClient, model_id: str) -> int | None:
+def get_embedding_dimension(client: OgxClient, model_id: str) -> int | None:
+    for m in _list_models(client):
+        if _get_model_id(m) == model_id:
+            meta = getattr(m, "custom_metadata", None) or getattr(m, "metadata", None) or {}
+            if isinstance(meta, dict) and isinstance(meta.get("embedding_dimension"), int):
+                return meta["embedding_dimension"]
+            dim = getattr(m, "embedding_dimension", None)
+            if isinstance(dim, int):
+                return dim
+            break
     try:
         response = client.embeddings.create(model=model_id, input="dimension probe")
     except Exception:

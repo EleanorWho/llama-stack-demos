@@ -1,13 +1,13 @@
 # OpenAI Compatibility Demos
 
-Llama Stack implements OpenAI-compatible APIs (`/v1/chat/completions`, `/v1/responses`). These demos prove that **existing OpenAI code works against a Llama Stack server** with only a `base_url` change — no SDK swap required.
+OGX implements OpenAI-compatible APIs (`/v1/chat/completions`, `/v1/responses`). These demos prove that **existing OpenAI code works against a OGX server** with only a `base_url` change — no SDK swap required.
 
-## Key Differences from Native Llama Stack Client
+## Key Differences from Native OGX Client
 
-| | Native `LlamaStackClient` | `openai.OpenAI` |
+| | Native `OgxClient` | `openai.OpenAI` |
 |---|---|---|
 | **base_url** | `http://host:port` | `http://host:port/v1` (needs `/v1` suffix) |
-| **api_key** | Not required | Required by SDK; use `"fake"` or set `LLAMA_STACK_API_KEY` |
+| **api_key** | Not required | Required by SDK; use `"fake"` or set `OGX_API_KEY` |
 | **Shared utils** | Can import `demos.shared.utils` | Uses `resolve_openai_model` from `demos.shared.utils` |
 
 ## Demos
@@ -31,7 +31,7 @@ python -m demos.06_openai_compatibility.02_tool_calling localhost 8321
 ```
 
 ### 03_responses_api.py
-Uses `client.responses.create()` from the OpenAI SDK against Llama Stack, with both string and structured message-list inputs.
+Uses `client.responses.create()` from the OpenAI SDK against OGX, with both string and structured message-list inputs.
 
 ```bash
 python -m demos.06_openai_compatibility.03_responses_api localhost 8321
@@ -109,5 +109,5 @@ python -m demos.06_openai_compatibility.13_responses_combined localhost 8321
 
 ## Prerequisites
 
-- A running Llama Stack server (e.g. `llama stack run starter`)
+- A running OGX server (e.g. `ogx run starter`)
 - The `openai` Python package (`pip install openai>=1.75.0`)

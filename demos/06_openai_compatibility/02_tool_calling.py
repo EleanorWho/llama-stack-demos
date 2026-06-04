@@ -3,7 +3,7 @@ Demo: OpenAI-Compatible Tool Calling
 
 Description:
 This demo shows the standard OpenAI function-calling flow against a
-Llama Stack server: define tools, let the model request a call, execute
+OGX server: define tools, let the model request a call, execute
 locally, and send results back.
 
 Learning Objectives:
@@ -101,7 +101,7 @@ def main(
 
     client = OpenAI(
         base_url=f"{scheme}://{host}:{port}/v1",
-        api_key=os.getenv("LLAMA_STACK_API_KEY", "fake"),
+        api_key=os.getenv("OGX_API_KEY", "fake"),
     )
 
     resolved_model = resolve_openai_model(client, model_id)

@@ -2,25 +2,25 @@
 
 ## Prerequisites
 
-Before running these demos, ensure you have a Llama Stack server running:
+Before running these demos, ensure you have an OGX server running:
 
 **Option 1: Local Server (Recommended for learning)**
 ```bash
 # Follow the setup instructions in ../README.md to install Ollama and start the server
-llama stack run starter  # Runs on localhost:8321
+ogx run starter  # Runs on localhost:8321
 ```
 
 **Option 2: Remote Server**
 If using a remote server (e.g., OpenShift AI), ensure you have:
 - Network access to the server
-- Authentication token configured in `.env` file (`LLAMA_STACK_CLIENT_API_KEY`)
+- Authentication token configured in `.env` file (`OGX_CLIENT_API_KEY`)
 - Port forwarding set up if needed
 
 ## Overview
-This folder teaches the fundamental building blocks of Llama Stack, including client setup, chat completions, vector databases, and tool integration. These examples cover the core APIs and concepts needed to build AI applications.
+This folder teaches the fundamental building blocks of OGX, including client setup, chat completions, vector databases, and tool integration. These examples cover the core APIs and concepts needed to build AI applications.
 
 ## Learning Objectives
-- Initialize and connect to a Llama Stack server
+- Initialize and connect to an OGX server
 - Perform chat completions with streaming support
 - Customize model behavior with system prompts
 - Create and manage vector stores for semantic search
@@ -32,9 +32,9 @@ This folder teaches the fundamental building blocks of Llama Stack, including cl
 ### Demo 1: Client Setup
 **File**: `01_client_setup.py`
 
-**Concepts**: LlamaStackClient initialization, server health checks, connection management
+**Concepts**: OgxClient initialization, server health checks, connection management
 
-**Description**: Validates your connection to a Llama Stack server by performing a health check. This is the foundational step for all subsequent examples.
+**Description**: Validates your connection to an OGX server by performing a health check. This is the foundational step for all subsequent examples.
 
 **Run**:
 ```bash
@@ -86,7 +86,7 @@ python -m demos.01_foundations.03_system_prompts localhost 8321 --system_prompt 
 python -m demos.01_foundations.04_vector_db_basics localhost 8321
 
 # Provide custom text and query
-python -m demos.01_foundations.04_vector_db_basics localhost 8321 --text "Llama Stack unifies AI services." --query "What does Llama Stack do?"
+python -m demos.01_foundations.04_vector_db_basics localhost 8321 --text "OGX unifies AI services." --query "What does OGX do?"
 ```
 
 ### Demo 5: Insert Documents
@@ -117,7 +117,7 @@ python -m demos.01_foundations.05_insert_documents localhost 8321 --vector_store
 
 **Run**:
 ```bash
-python -m demos.01_foundations.06_search_vectors localhost 8321 --query "What does Llama Stack do?"
+python -m demos.01_foundations.06_search_vectors localhost 8321 --query "What does OGX do?"
 ```
 
 ### Demo 7: Tool Runtime API
@@ -125,7 +125,7 @@ python -m demos.01_foundations.06_search_vectors localhost 8321 --query "What do
 
 **Concepts**: Tool runtime API, toolgroup registration, tool invocation, provider management, direct tool calls
 
-**Description**: Demonstrates how to use the Llama Stack tool runtime APIs to register toolgroups, list available tools, and invoke tools directly without using agents or MCP servers. Shows the core APIs: `toolgroups.register()`, `tool_runtime.list_tools()`, and `tool_runtime.invoke_tool()`.
+**Description**: Demonstrates how to use the OGX tool runtime APIs to register toolgroups, list available tools, and invoke tools directly without using agents or MCP servers. Shows the core APIs: `toolgroups.register()`, `tool_runtime.list_tools()`, and `tool_runtime.invoke_tool()`.
 
 **Run**:
 ```bash
@@ -137,15 +137,15 @@ python -m demos.01_foundations.07_tool_registration localhost 8321
 
 **Concepts**: Model Context Protocol (MCP), MCP servers, tool groups, remote tool registration
 
-**Description**: Demonstrates how to start a local MCP server and register its tools with Llama Stack for use in agent workflows.
+**Description**: Demonstrates how to start a local MCP server and register its tools with OGX for use in agent workflows.
 
 **Run**:
 ```bash
 # Terminal 1: start the MCP server (requires: pip install mcp)
 python -m demos.01_foundations.08_mcp_tools serve
 
-# Terminal 2: register the MCP toolgroup with Llama Stack (Optional)
-llama-stack-client toolgroups register plus-tools \
+# Terminal 2: register the MCP toolgroup with OGX (Optional)
+ogx-client toolgroups register plus-tools \
   --provider-id model-context-protocol \
   --mcp-endpoint "http://localhost:8000/sse"
 

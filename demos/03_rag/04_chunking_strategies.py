@@ -24,7 +24,7 @@ import os
 from uuid import uuid4
 
 import fire
-from llama_stack_client import LlamaStackClient
+from ogx_client import OgxClient
 from termcolor import colored
 
 from demos.shared.utils import (
@@ -47,7 +47,7 @@ def _maybe_load_dotenv() -> None:
 
 
 def _attach_with_chunking(
-    client: LlamaStackClient,
+    client: OgxClient,
     vector_store_id: str,
     text: str,
     filename: str,
@@ -69,13 +69,13 @@ def main(
     port: int,
     model_id: str | None = None,
     embedding_model_id: str | None = None,
-    question: str = "What does Llama Stack provide?",
+    question: str = "What does OGX provide?",
 ) -> None:
     _maybe_load_dotenv()
 
-    client = LlamaStackClient(base_url=f"http://{host}:{port}")
+    client = OgxClient(base_url=f"http://{host}:{port}")
     # Select a chat-capable model for the RAG response.
-    resolved_model = model_id or os.getenv("LLAMA_STACK_MODEL")
+    resolved_model = model_id or os.getenv("OGX_MODEL")
     if resolved_model is None:
         resolved_model = get_any_available_chat_model(client)
         if resolved_model is None:
@@ -131,7 +131,7 @@ def main(
         # Same document content for both stores to isolate chunking differences.
         # Using a longer document to make chunking differences more apparent.
         doc_text = (
-            "Llama Stack provides a unified API for models, tools, and vector stores. "
+            "OGX provides a unified API for models, tools, and vector stores. "
             "It supports serving, evaluation, and agentic workflows. "
             "You can build RAG systems and multi-tool agents with it. "
             "The framework enables developers to create sophisticated AI applications "

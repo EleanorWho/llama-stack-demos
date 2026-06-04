@@ -21,8 +21,8 @@ import os
 import uuid
 
 import fire
-from llama_stack_client import AgentEventLogger, LlamaStackClient
-from llama_stack_client.lib.agents.react.agent import ReActAgent
+from ogx_client import AgentEventLogger, OgxClient
+from ogx_client.lib.agents.react.agent import ReActAgent
 from termcolor import colored
 
 from demos.shared.utils import can_model_chat, check_model_is_available, get_any_available_chat_model
@@ -63,7 +63,7 @@ def main(host: str, port: int, model_id: str | None = None):
         )
         return
 
-    client = LlamaStackClient(
+    client = OgxClient(
         base_url=f"http://{host}:{port}",
         provider_data={"tavily_search_api_key": tavily_api_key},
     )

@@ -3,7 +3,7 @@ Demo: Responses API - Streaming with stream_options
 
 Description:
 This demo shows how to use streaming and stream_options with the OpenAI
-Responses API against a Llama Stack server. Streaming returns response
+Responses API against a OGX server. Streaming returns response
 tokens incrementally, and stream_options can include usage statistics.
 
 Learning Objectives:
@@ -56,7 +56,7 @@ def main(
 
     client = OpenAI(
         base_url=f"{scheme}://{host}:{port}/v1",
-        api_key=os.getenv("LLAMA_STACK_API_KEY", "fake"),
+        api_key=os.getenv("OGX_API_KEY", "fake"),
     )
 
     resolved_model = resolve_openai_model(client, model_id)
@@ -68,7 +68,7 @@ def main(
     print(colored("\n--- Basic streaming ---", "cyan"))
     stream = client.responses.create(
         model=resolved_model,
-        input="Explain what Llama Stack is in two sentences.",
+        input="Explain what OGX is in two sentences.",
         stream=True,
     )
     for event in stream:

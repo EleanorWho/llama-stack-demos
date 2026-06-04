@@ -24,7 +24,7 @@ from uuid import uuid4
 
 import fire
 import time
-from llama_stack_client import Agent, AgentEventLogger, LlamaStackClient
+from ogx_client import Agent, AgentEventLogger, OgxClient
 from termcolor import colored
 
 from demos.shared.utils import (
@@ -54,7 +54,7 @@ def main(
         for url in urls
     ]
 
-    client = LlamaStackClient(base_url=f"http://{host}:{port}")
+    client = OgxClient(base_url=f"http://{host}:{port}")
 
     if model_id is None:
         model_id = get_any_available_chat_model(client)

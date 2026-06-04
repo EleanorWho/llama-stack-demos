@@ -2,7 +2,7 @@
 Demo: Chat Completion
 
 Description:
-This demo teaches how to perform basic chat completions with Llama Stack, including both streaming and non-streaming responses.
+This demo teaches how to perform basic chat completions with OGX, including both streaming and non-streaming responses.
 
 Learning Objectives:
 - Create chat completion requests with user messages
@@ -22,7 +22,7 @@ from __future__ import annotations
 import os
 
 import fire
-from llama_stack_client import LlamaStackClient
+from ogx_client import OgxClient
 from termcolor import colored
 
 from demos.shared.utils import (
@@ -56,13 +56,13 @@ def main(
     host: str,
     port: int,
     model_id: str | None = None,
-    prompt: str = "Give me a short summary of Llama Stack.",
+    prompt: str = "Give me a short summary of OGX.",
     stream: bool = False,
 ) -> None:
     _maybe_load_dotenv()
 
-    client = LlamaStackClient(base_url=f"http://{host}:{port}")
-    resolved_model = model_id or os.getenv("LLAMA_STACK_MODEL")
+    client = OgxClient(base_url=f"http://{host}:{port}")
+    resolved_model = model_id or os.getenv("OGX_MODEL")
     if resolved_model is None:
         resolved_model = get_any_available_chat_model(client)
         if resolved_model is None:

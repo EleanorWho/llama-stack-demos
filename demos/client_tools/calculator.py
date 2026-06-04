@@ -1,5 +1,5 @@
 import logging
-from llama_stack_client.lib.agents.client_tool import client_tool
+from ogx_client.lib.agents.client_tool import client_tool
 
 # Set up logging
 logging.basicConfig(level=logging.WARNING)

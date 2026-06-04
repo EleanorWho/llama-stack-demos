@@ -1,7 +1,7 @@
 # Agents
 
 ## Overview
-This folder teaches how to build conversational agents using the Llama Stack Agent API. These examples demonstrate different agent capabilities including chat, multimodal processing, document grounding, custom tools, RAG integration, reasoning patterns, and multi-agent coordination.
+This folder teaches how to build conversational agents using the OGX Agent API. These examples demonstrate different agent capabilities including chat, multimodal processing, document grounding, custom tools, RAG integration, reasoning patterns, and multi-agent coordination.
 
 ## Learning Objectives
 - Create and configure conversational agents
@@ -104,9 +104,9 @@ python -m demos.04_agents.07_agent_routing --host localhost --port 8321
 
 ## Usage Tips
 
-- All scripts accept `--host` and `--port` parameters to specify the Llama Stack server connection
+- All scripts accept `--host` and `--port` parameters to specify the OGX server connection
 - You can specify a particular model using the `--model_id` parameter (as shown in the examples above)
 - If no model is specified, the scripts will automatically select an available model
 - Look at `01_simple_agent_chat` for an example of how to automatically pick an available safety shield for the agent
 
-For more information on the Llama Stack framework, refer to the [official documentation](https://github.com/meta-llama/llama-stack).
+For more information on the OGX framework, refer to the [official documentation](https://github.com/ogx-ai/ogx).

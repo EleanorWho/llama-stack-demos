@@ -3,7 +3,7 @@ Demo: Responses API - reasoning.effort
 
 Description:
 This demo shows how to use the reasoning parameter with the OpenAI
-Responses API against a Llama Stack server. The reasoning.effort parameter
+Responses API against a OGX server. The reasoning.effort parameter
 controls how much reasoning effort the model puts into its response
 (low, medium, or high).
 
@@ -57,7 +57,7 @@ def main(
 
     client = OpenAI(
         base_url=f"{scheme}://{host}:{port}/v1",
-        api_key=os.getenv("LLAMA_STACK_API_KEY", "fake"),
+        api_key=os.getenv("OGX_API_KEY", "fake"),
     )
 
     resolved_model = resolve_openai_model(client, model_id)

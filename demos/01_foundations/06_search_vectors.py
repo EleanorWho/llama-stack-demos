@@ -25,7 +25,7 @@ from pathlib import Path
 from uuid import uuid4
 
 import fire
-from llama_stack_client import LlamaStackClient
+from ogx_client import OgxClient
 from termcolor import colored
 
 from demos.shared.utils import (
@@ -43,11 +43,11 @@ except Exception:  # pragma: no cover - optional dependency
 # JSX syntax and Docusaurus-specific markup being included in embeddings.
 # For production use, consider using plain .md files instead.
 DEFAULT_URLS = [
-    "https://raw.githubusercontent.com/llamastack/llama-stack/refs/heads/main/README.md",
-    "https://raw.githubusercontent.com/llamastack/llama-stack/refs/heads/main/docs/docs/index.mdx",
-    "https://raw.githubusercontent.com/llamastack/llama-stack/refs/heads/main/docs/docs/getting_started/quickstart.mdx",
-    "https://raw.githubusercontent.com/llamastack/llama-stack/refs/heads/main/docs/docs/concepts/architecture.mdx",
-    "https://raw.githubusercontent.com/llamastack/llama-stack/refs/heads/main/docs/docs/api-overview.md",
+    "https://raw.githubusercontent.com/ogx-ai/ogx/refs/heads/main/README.md",
+    "https://raw.githubusercontent.com/ogx-ai/ogx/refs/heads/main/docs/docs/index.mdx",
+    "https://raw.githubusercontent.com/ogx-ai/ogx/refs/heads/main/docs/docs/getting_started/quickstart.mdx",
+    "https://raw.githubusercontent.com/ogx-ai/ogx/refs/heads/main/docs/docs/concepts/architecture.mdx",
+    "https://raw.githubusercontent.com/ogx-ai/ogx/refs/heads/main/docs/docs/api-overview.mdx",
 ]
 
 
@@ -71,7 +71,7 @@ def _print_results(search_response) -> None:
             print(f"   {snippet}")
 
 
-def _get_vector_provider(client: LlamaStackClient, provider_id: str | None):
+def _get_vector_provider(client: OgxClient, provider_id: str | None):
     vector_providers = [
         provider for provider in client.providers.list() if provider.api == "vector_io"
     ]
@@ -104,7 +104,7 @@ def _collect_local_files(file_dir: str) -> list[Path]:
 
 
 def _attach_file(
-    client: LlamaStackClient,
+    client: OgxClient,
     vector_store_id: str,
     file_id: str,
     filename: str,
@@ -155,7 +155,7 @@ def main(
 ) -> None:
     _maybe_load_dotenv()
 
-    client = LlamaStackClient(base_url=f"http://{host}:{port}")
+    client = OgxClient(base_url=f"http://{host}:{port}")
     embedding_model = embedding_model_id or get_any_available_embedding_model(client)
     if embedding_model is None:
         return

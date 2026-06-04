@@ -2,11 +2,11 @@
 Demo: MCP Tools
 
 Description:
-This demo teaches how to set up and use Model Context Protocol (MCP) servers to expose tools to Llama Stack.
+This demo teaches how to set up and use Model Context Protocol (MCP) servers to expose tools to OGX.
 
 Learning Objectives:
 - Start an MCP server with custom tools
-- Register MCP endpoints as toolgroups with Llama Stack
+- Register MCP endpoints as toolgroups with OGX
 - Invoke remote MCP tools through the tool runtime
 - Manage toolgroup lifecycle (register, use, unregister)
 """
@@ -22,7 +22,7 @@ from __future__ import annotations
 import fire
 from termcolor import colored
 
-from llama_stack_client import LlamaStackClient
+from ogx_client import OgxClient
 
 try:
     from dotenv import load_dotenv
@@ -61,7 +61,7 @@ def serve() -> None:
     mcp.run(transport="sse")
 
 
-def _get_toolgroup_provider(client: LlamaStackClient, provider_id: str | None):
+def _get_toolgroup_provider(client: OgxClient, provider_id: str | None):
     providers = [p for p in client.providers.list() if p.api == "tool_runtime"]
     if not providers:
         print(colored("No toolgroup providers found. Skipping registration.", "yellow"))
@@ -96,11 +96,11 @@ def run(
     """
     _maybe_load_dotenv()
 
-    client = LlamaStackClient(base_url=f"http://{host}:{port}")
+    client = OgxClient(base_url=f"http://{host}:{port}")
     provider = _get_toolgroup_provider(client, provider_id)
     registered = False
     if provider is not None:
-        # Register the MCP server as a toolgroup with the Llama Stack server.
+        # Register the MCP server as a toolgroup with the OGX server.
         client.toolgroups.register(
             provider_id=provider.provider_id,
             toolgroup_id=toolgroup_id,
@@ -121,7 +121,7 @@ def run(
             print(colored(f"Tool '{tool_name}' not found in MCP tools.", "red"))
             print(
                 colored(
-                    "Hint: your Llama Stack server may be ignoring the MCP endpoint and returning its own tools. "
+                    "Hint: your OGX server may be ignoring the MCP endpoint and returning its own tools. "
                     "Ensure the server is configured with an MCP-capable toolgroup provider, "
                     "or point to a server that supports remote MCP endpoints.",
                     "yellow",
@@ -136,7 +136,7 @@ def run(
         )
         print(f"{tool_name}({a}, {b}) -> {result}")
     finally:
-        # Unregister the MCP toolgroup from the Llama Stack server.
+        # Unregister the MCP toolgroup from the OGX server.
         if registered:
             client.toolgroups.unregister(toolgroup_id=toolgroup_id)
             print(f"Unregistered toolgroup '{toolgroup_id}'")

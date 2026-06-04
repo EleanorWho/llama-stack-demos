@@ -24,7 +24,7 @@ import os
 from uuid import uuid4
 
 import fire
-from llama_stack_client import LlamaStackClient
+from ogx_client import OgxClient
 from termcolor import colored
 
 from demos.shared.utils import (
@@ -52,14 +52,14 @@ def main(
     model_id: str | None = None,
     embedding_model_id: str | None = None,
     doc_text: str = (
-        "Llama Stack provides a unified API to build AI applications with models, tools, and vector stores."
+        "OGX provides a unified API to build AI applications with models, tools, and vector stores."
     ),
-    question: str = "What does Llama Stack provide?",
+    question: str = "What does OGX provide?",
 ) -> None:
     _maybe_load_dotenv()
 
-    client = LlamaStackClient(base_url=f"http://{host}:{port}")
-    resolved_model = model_id or os.getenv("LLAMA_STACK_MODEL")
+    client = OgxClient(base_url=f"http://{host}:{port}")
+    resolved_model = model_id or os.getenv("OGX_MODEL")
     if resolved_model is None:
         resolved_model = get_any_available_chat_model(client)
         if resolved_model is None:

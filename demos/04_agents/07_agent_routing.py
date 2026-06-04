@@ -26,7 +26,7 @@ from termcolor import colored
 from demos.client_tools.calculator import calculator
 from demos.client_tools.ticker_data import get_ticker_data
 from demos.client_tools.web_search import WebSearchTool
-from llama_stack_client import Agent, LlamaStackClient
+from ogx_client import Agent, OgxClient
 
 from demos.shared.utils import can_model_chat, check_model_is_available, get_any_available_chat_model
 
@@ -87,7 +87,7 @@ def _extract_output(response) -> str:
 
 
 def main(host: str, port: int, model_id: str | None = None):
-    client = LlamaStackClient(base_url=f"http://{host}:{port}")
+    client = OgxClient(base_url=f"http://{host}:{port}")
 
     if model_id is None:
         model_id = get_any_available_chat_model(client)
@@ -141,12 +141,12 @@ def main(host: str, port: int, model_id: str | None = None):
 
     task = (
         "Prepare a brief update for a product manager: "
-        "1) Find a recent Llama Stack update. "
+        "1) Find a recent OGX update. "
         "2) Compute 45 * 12 / 6. "
         "3) Get the closing price of GOOG for 2023."
     )
     subtasks = [
-        "Find a recent Llama Stack update and summarize it in one sentence.",
+        "Find a recent OGX update and summarize it in one sentence.",
         "Compute 45 * 12 / 6.",
         "What was the closing price of GOOG for 2023?",
     ]

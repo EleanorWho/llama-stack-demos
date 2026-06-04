@@ -2,7 +2,7 @@
 Demo: Tool Runtime API
 
 Description:
-This demo teaches how to use the Llama Stack tool runtime APIs to register, list, and invoke tools directly
+This demo teaches how to use the OGX tool runtime APIs to register, list, and invoke tools directly
 without using agents or MCP servers.
 
 Learning Objectives:
@@ -23,7 +23,7 @@ from __future__ import annotations
 import fire
 from termcolor import colored
 
-from llama_stack_client import LlamaStackClient
+from ogx_client import OgxClient
 
 try:
     from dotenv import load_dotenv
@@ -45,7 +45,7 @@ def main(
     """
     _maybe_load_dotenv()
 
-    client = LlamaStackClient(base_url=f"http://{host}:{port}")
+    client = OgxClient(base_url=f"http://{host}:{port}")
 
     print(colored("\n=== Step 1: Check Available Tool Runtime Providers ===", "green"))
     # List providers that support tool_runtime API
@@ -96,10 +96,10 @@ def main(
         # Try to find a simple tool to invoke
         # Common built-in tools: web_search, knowledge_search, insert_into_memory, code_interpreter
         invokable_tools = [
-            ("web_search", {"query": "What is Llama Stack?"}),
-            ("knowledge_search", {"query": "Llama Stack"}),
+            ("web_search", {"query": "What is OGX?"}),
+            ("knowledge_search", {"query": "OGX"}),
             ("code_interpreter", {"code": "print(2 + 2)"}),
-            ("brave_search", {"query": "Llama Stack"}),
+            ("brave_search", {"query": "OGX"}),
             ("wolfram_alpha", {"query": "2+2"}),
         ]
 
@@ -138,7 +138,7 @@ def main(
                 "yellow"
             ))
             print(colored(
-                "  1. Configure your Llama Stack server with built-in tools (e.g., code_interpreter, web_search)",
+                "  1. Configure your OGX server with built-in tools (e.g., code_interpreter, web_search)",
                 "yellow"
             ))
             print(colored(
@@ -169,7 +169,7 @@ def main(
 
     # For more advanced examples, see:
     # - demo 08_mcp_tools.py for MCP-based registration
-    # - Your Llama Stack server configuration for available providers
+    # - Your OGX server configuration for available providers
     """, "cyan"))
 
     print(colored("\n=== Summary ===", "green"))

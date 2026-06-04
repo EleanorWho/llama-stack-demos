@@ -22,7 +22,7 @@ import time
 from pathlib import Path
 
 import fire
-from llama_stack_client import LlamaStackClient
+from ogx_client import OgxClient
 from termcolor import colored
 
 from demos.shared.utils import (
@@ -49,7 +49,7 @@ def main(
         "https://raw.githubusercontent.com/pytorch/torchtune/main/docs/source/tutorials/lora_finetune.rst",
     ]
 
-    client = LlamaStackClient(
+    client = OgxClient(
         base_url=f"http://{host}:{port}",
     )
 

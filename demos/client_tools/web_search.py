@@ -11,7 +11,7 @@ from typing import Dict, Any
 import httpx
 import requests
 
-from llama_stack_client.lib.agents.client_tool import ClientTool
+from ogx_client.lib.agents.client_tool import ClientTool
 
 
 class BraveSearch:
