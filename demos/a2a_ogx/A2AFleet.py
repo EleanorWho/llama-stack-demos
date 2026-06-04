@@ -2,17 +2,17 @@ import threading
 from typing import List, Optional, Union, Callable, Any
 from urllib.parse import urlparse
 
-from llama_stack_client import LlamaStackClient, Agent
-from llama_stack_client.lib.agents.client_tool import ClientTool
-from llama_stack_client.lib.agents.tool_parser import ToolParser
-from llama_stack_client.types import SamplingParams, ResponseFormat
-from llama_stack_client.types.shared_params.agent_config import Toolgroup, ToolConfig
+from ogx_client import OgxClient, Agent
+from ogx_client.lib.agents.client_tool import ClientTool
+from ogx_client.lib.agents.tool_parser import ToolParser
+from ogx_client.types import SamplingParams, ResponseFormat
+from ogx_client.types.shared_params.agent_config import Toolgroup, ToolConfig
 from pydantic import BaseModel, model_validator
 
 from common.server import A2AServer
 from common.types import AgentCard
-from demos.a2a_llama_stack.A2ATool import A2ATool
-from demos.a2a_llama_stack.task_manager import AgentTaskManager
+from demos.a2a_ogx.A2ATool import A2ATool
+from demos.a2a_ogx.task_manager import AgentTaskManager
 
 
 class LLSAgentConfiguration(BaseModel):
@@ -45,7 +45,7 @@ class AgentSpecification(BaseModel):
             if self.a2a_agent_card is None:
                 raise ValueError("The agent A2A card must be provided for a managed agent.")
             if self.lls_agent_config is None:
-                raise ValueError("The Llama Stack agent configuration must be provided for a managed agent.")
+                raise ValueError("The OGX agent configuration must be provided for a managed agent.")
             parsed_url = urlparse(self.url)
             if parsed_url.hostname not in ('localhost', '127.0.0.1'):
                 raise ValueError("Cannot run A2A server on a remote host.")
@@ -65,7 +65,7 @@ class A2AFleetAgent:
         self.lls_agent = None
         self.a2a_server = None
 
-    def run_agent(self, client: LlamaStackClient):
+    def run_agent(self, client: OgxClient):
         if not self.spec.managed:
             return
 
@@ -85,10 +85,10 @@ class A2AFleetAgent:
 
 class A2AFleet:
     """
-    A manager for a set of A2A-aware Llama Stack agents.
+    A manager for a set of A2A-aware OGX agents.
     """
-    def __init__(self, llama_stack_url: str, agent_specs: List[AgentSpecification]):
-        self.client = LlamaStackClient(base_url=llama_stack_url)
+    def __init__(self, ogx_url: str, agent_specs: List[AgentSpecification]):
+        self.client = OgxClient(base_url=ogx_url)
 
         self.agents = {}
         for spec in agent_specs:
@@ -100,7 +100,7 @@ class A2AFleet:
 
     def run_fleet(self):
         """
-        Initialize the managed Llama Stack servers and run each of them as a dedicated A2A server.
+        Initialize the managed OGX agents and run each of them as a dedicated A2A server.
         """
         for agent in self.agents.values():
             agent.run_agent(self.client)
@@ -108,7 +108,7 @@ class A2AFleet:
 
     def query_agent(self, agent_id, **kwargs):
         """
-        Send a query to a managed Llama Stack agent.
+        Send a query to a managed OGX agent.
         TODO: this way to access an agent is not thread-safe!
         """
         if not self.fleet_active:

@@ -25,13 +25,13 @@ from demos.client_tools.ticker_data import get_ticker_data
 from demos.client_tools.web_search import WebSearchTool
 from demos.client_tools.calculator import calculator
 
-from llama_stack_client import LlamaStackClient, Agent, AgentEventLogger
+from ogx_client import OgxClient, Agent, AgentEventLogger
 
 from demos.shared.utils import can_model_chat, check_model_is_available, get_any_available_chat_model
 
 
 def main(host: str, port: int, model_id: str | None = None):
-    client = LlamaStackClient(base_url=f"http://{host}:{port}")
+    client = OgxClient(base_url=f"http://{host}:{port}")
 
     api_key = ""
     engine = "tavily"

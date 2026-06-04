@@ -22,7 +22,7 @@ import mimetypes
 from pathlib import Path
 
 import fire
-from llama_stack_client import Agent, LlamaStackClient
+from ogx_client import Agent, OgxClient
 from termcolor import colored
 
 from demos.shared.utils import check_model_is_available
@@ -40,7 +40,7 @@ def _data_url_from_image(file_path: Path) -> str:
 
 
 def main(host: str, port: int, model_id: str | None = None):
-    client = LlamaStackClient(
+    client = OgxClient(
         base_url=f"http://{host}:{port}",
     )
 

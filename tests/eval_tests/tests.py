@@ -3,12 +3,12 @@ import os
 import json
 import logging
 import time
-from llama_stack_client.lib.agents.client_tool import ClientTool
+from ogx_client.lib.agents.client_tool import ClientTool
 import utils
 from typing import Dict, List, Any, Optional, Union
 from dotenv import load_dotenv
-from llama_stack_client import LlamaStackClient
-from llama_stack_client.lib.agents.agent import Agent
+from ogx_client import OgxClient
+from ogx_client.lib.agents.agent import Agent
 from tools import tools, tools_only_params, tools_no_extra_tags, tools_bad_function_names
 
 # Max client tools llama3.2:3B can handle
@@ -71,7 +71,7 @@ def get_query_id(query_obj):
     return "unknown_query"
 
 def register_toolgroup_if_needed(
-    client: LlamaStackClient,
+    client: OgxClient,
     toolgroup_id: str,
     mcp_url: str,
     logger: logging.Logger
@@ -100,7 +100,7 @@ def register_toolgroup_if_needed(
         return False
 
 def execute_query(
-    client: LlamaStackClient,
+    client: OgxClient,
     prompt: str,
     model: str,
     tools: Union[List[str], List[Any]], # list of toolgroup_ids or tool objects
@@ -307,7 +307,7 @@ def main():
         logger.error("REMOTE_BASE_URL environment variable not set")
         return
 
-    llama_client = LlamaStackClient(base_url=base_url)
+    llama_client = OgxClient(base_url=base_url)
 
     # Define models to test
     # make sure they are available in your LLS server

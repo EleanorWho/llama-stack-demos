@@ -3,7 +3,7 @@ Demo: Responses API - service_tier
 
 Description:
 This demo shows how to use the service_tier parameter with the OpenAI
-Responses API against a Llama Stack server. The service_tier parameter
+Responses API against a OGX server. The service_tier parameter
 allows you to specify the processing tier for the request (e.g., "auto",
 "default").
 
@@ -57,7 +57,7 @@ def main(
 
     client = OpenAI(
         base_url=f"{scheme}://{host}:{port}/v1",
-        api_key=os.getenv("LLAMA_STACK_API_KEY", "fake"),
+        api_key=os.getenv("OGX_API_KEY", "fake"),
     )
 
     resolved_model = resolve_openai_model(client, model_id)
@@ -69,7 +69,7 @@ def main(
     print(colored("\n--- service_tier='auto' ---", "cyan"))
     response = client.responses.create(
         model=resolved_model,
-        input="What is Llama Stack?",
+        input="What is OGX?",
         service_tier="auto",
     )
     print(f"Output: {response.output_text}")

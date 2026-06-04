@@ -1,7 +1,7 @@
 import logging
 from typing import AsyncIterable, Union, AsyncIterator
 
-from llama_stack_client import Agent, AgentEventLogger
+from ogx_client import Agent, AgentEventLogger
 
 import common.server.utils as utils
 from common.server.task_manager import InMemoryTaskManager

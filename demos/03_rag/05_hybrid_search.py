@@ -24,7 +24,7 @@ import os
 from uuid import uuid4
 
 import fire
-from llama_stack_client import LlamaStackClient
+from ogx_client import OgxClient
 from termcolor import colored
 
 from demos.shared.utils import (
@@ -48,7 +48,7 @@ def _maybe_load_dotenv() -> None:
 
 
 def _attach_text(
-    client: LlamaStackClient,
+    client: OgxClient,
     vector_store_id: str,
     text: str,
     filename: str,
@@ -188,12 +188,12 @@ def main(
     port: int,
     model_id: str | None = None,
     embedding_model_id: str | None = None,
-    question: str = "What does Llama Stack provide and what are recent updates?",
+    question: str = "What does OGX provide and what are recent updates?",
 ) -> None:
     _maybe_load_dotenv()
 
-    client = LlamaStackClient(base_url=f"http://{host}:{port}")
-    resolved_model = model_id or os.getenv("LLAMA_STACK_MODEL")
+    client = OgxClient(base_url=f"http://{host}:{port}")
+    resolved_model = model_id or os.getenv("OGX_MODEL")
     if resolved_model is None:
         resolved_model = get_any_available_chat_model(client)
         if resolved_model is None:
@@ -240,7 +240,7 @@ def main(
         _attach_text(
             client,
             vector_store.id,
-            "Llama Stack provides a unified API for models, tools, and vector stores.",
+            "OGX provides a unified API for models, tools, and vector stores.",
             "hybrid_doc.txt",
         )
 

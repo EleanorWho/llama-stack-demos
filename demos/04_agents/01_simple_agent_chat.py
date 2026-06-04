@@ -21,7 +21,7 @@ import inspect
 import os
 
 import fire
-from llama_stack_client import LlamaStackClient, Agent, AgentEventLogger
+from ogx_client import OgxClient, Agent, AgentEventLogger
 from termcolor import colored
 
 from demos.shared.utils import check_model_is_available, get_any_available_chat_model
@@ -37,7 +37,7 @@ def main(host: str, port: int, model_id: str | None = None):
         )
         return
 
-    client = LlamaStackClient(
+    client = OgxClient(
         base_url=f"http://{host}:{port}",
         provider_data={"tavily_search_api_key": os.getenv("TAVILY_SEARCH_API_KEY")},
     )

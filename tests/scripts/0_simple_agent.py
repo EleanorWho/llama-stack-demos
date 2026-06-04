@@ -1,7 +1,7 @@
-# Code bellow written following examples here: https://llama-stack.readthedocs.io/en/latest/building_applications
-from llama_stack_client.lib.agents.agent import Agent
-from llama_stack_client.lib.agents.event_logger import EventLogger
-from llama_stack_client import LlamaStackClient
+# Code bellow written following examples here: https://ogx-ai.github.io/docs/building_applications
+from ogx_client.lib.agents.agent import Agent
+from ogx_client.lib.agents.event_logger import EventLogger
+from ogx_client import OgxClient
 from termcolor import cprint
 import argparse
 import logging
@@ -29,7 +29,7 @@ args = parser.parse_args()
 
 model="meta-llama/Llama-3.2-3B-Instruct"
 
-# Connect to a llama stack server
+# Connect to an OGX server
 if args.remote:
     base_url = os.getenv("REMOTE_BASE_URL")
     mcp_url = os.getenv("REMOTE_MCP_URL")
@@ -37,8 +37,8 @@ else:
     base_url="http://localhost:8321"
     mcp_url="http://host.containers.internal:8000/sse"
 
-client = LlamaStackClient(base_url=base_url)
-logger.info(f"Connected to Llama Stack server @ {base_url} \n")
+client = OgxClient(base_url=base_url)
+logger.info(f"Connected to OGX server @ {base_url} \n")
 
 # Get tool info and register tools
 registered_tools = client.tools.list()

@@ -3,8 +3,8 @@ import threading
 from typing import Dict
 from uuid import uuid4
 
-from llama_stack_client.lib.agents.client_tool import ClientTool
-from llama_stack_client.types.tool_def_param import Parameter
+from ogx_client.lib.agents.client_tool import ClientTool
+from ogx_client.types.tool_def_param import Parameter
 
 from common.client import A2ACardResolver, A2AClient
 from common.types import AgentCard, TextPart

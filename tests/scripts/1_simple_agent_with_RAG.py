@@ -1,10 +1,10 @@
-# Code bellow written following examples here: https://llama-stack.readthedocs.io/en/latest/building_applications
-# Code bellow written following examples here: https://llama-stack.readthedocs.io/en/latest/building_applications/rag.html
-from llama_stack_client.lib.agents.agent import Agent
-from llama_stack_client.lib.agents.event_logger import EventLogger
-from llama_stack_client.types import Document
+# Code bellow written following examples here: https://ogx-ai.github.io/docs/building_applications
+# Code bellow written following examples here: https://ogx-ai.github.io/docs/building_applications/rag.html
+from ogx_client.lib.agents.agent import Agent
+from ogx_client.lib.agents.event_logger import EventLogger
+from ogx_client.types import Document
 
-from llama_stack_client import LlamaStackClient
+from ogx_client import OgxClient
 from termcolor import cprint
 import argparse
 import logging
@@ -30,7 +30,7 @@ args = parser.parse_args()
 
 model="meta-llama/Llama-3.2-3B-Instruct"
 
-# Connect to a llama stack server
+# Connect to an OGX server
 if args.remote:
     base_url = os.getenv("REMOTE_BASE_URL")
     mcp_url = os.getenv("REMOTE_MCP_URL")
@@ -40,8 +40,8 @@ else:
     mcp_url="http://host.containers.internal:8000/sse"
     vdb_provider="faiss"
 
-client = LlamaStackClient(base_url=base_url)
-logger.info(f"Connected to Llama Stack server @ {base_url} \n")
+client = OgxClient(base_url=base_url)
+logger.info(f"Connected to OGX server @ {base_url} \n")
 
 # Get tool info and register tools
 registered_tools = client.tools.list()
@@ -66,7 +66,7 @@ if "my_documents" not in vector_db_ids:
     provider_id=vdb_provider,
     )
 
-    urls = ["https://raw.githubusercontent.com/meta-llama/llama-stack/refs/heads/main/README.md"]
+    urls = ["https://raw.githubusercontent.com/ogx-ai/ogx/refs/heads/main/README.md"]
     documents = [
         Document(
             document_id=f"num-{i}",
@@ -107,7 +107,7 @@ agent = Agent(
 )
 
 if args.auto:
-    user_prompts = ["""Please use the knowledge search tool to tell me what you know about Llama Stack.""",
+    user_prompts = ["""Please use the knowledge search tool to tell me what you know about OGX.""",
                     """Give me a random number between 1 and 1010."""]
     session_id = agent.create_session(session_name="Auto_demo")
     for prompt in user_prompts:

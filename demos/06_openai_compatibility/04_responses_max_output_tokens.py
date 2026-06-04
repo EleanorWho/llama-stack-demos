@@ -3,7 +3,7 @@ Demo: Responses API - max_output_tokens
 
 Description:
 This demo shows how to use the max_output_tokens parameter with the
-OpenAI Responses API against a Llama Stack server. The parameter limits
+OpenAI Responses API against a OGX server. The parameter limits
 the number of tokens the model can generate in its response.
 
 Learning Objectives:
@@ -56,7 +56,7 @@ def main(
 
     client = OpenAI(
         base_url=f"{scheme}://{host}:{port}/v1",
-        api_key=os.getenv("LLAMA_STACK_API_KEY", "fake"),
+        api_key=os.getenv("OGX_API_KEY", "fake"),
     )
 
     resolved_model = resolve_openai_model(client, model_id)

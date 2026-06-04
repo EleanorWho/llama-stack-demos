@@ -3,12 +3,12 @@ Demo: OpenAI-Compatible Responses API
 
 Description:
 This demo uses the OpenAI SDK's Responses API (client.responses.create)
-against a Llama Stack server, proving OpenResponses compatibility.
+against a OGX server, proving OpenResponses compatibility.
 
 Learning Objectives:
 - Call the Responses API via the OpenAI Python SDK
 - Use both a plain string input and a structured message list
-- See how Llama Stack implements the OpenAI Responses API
+- See how OGX implements the OpenAI Responses API
 """
 
 # Copyright (c) Meta Platforms, Inc. and affiliates.
@@ -55,7 +55,7 @@ def main(
 
     client = OpenAI(
         base_url=f"{scheme}://{host}:{port}/v1",
-        api_key=os.getenv("LLAMA_STACK_API_KEY", "fake"),
+        api_key=os.getenv("OGX_API_KEY", "fake"),
     )
 
     resolved_model = resolve_openai_model(client, model_id)
@@ -67,7 +67,7 @@ def main(
     print(colored("\n--- String input ---", "cyan"))
     response = client.responses.create(
         model=resolved_model,
-        input="Give a one-sentence description of Llama Stack.",
+        input="Give a one-sentence description of OGX.",
     )
     print(response.output_text)
 

@@ -3,7 +3,7 @@ Demo: Responses API - Combined Parameters
 
 Description:
 This demo shows how to combine multiple Responses API parameters in a
-single request against a Llama Stack server. It demonstrates using
+single request against a OGX server. It demonstrates using
 max_output_tokens, temperature, top_p, truncation, and service_tier
 together.
 
@@ -57,7 +57,7 @@ def main(
 
     client = OpenAI(
         base_url=f"{scheme}://{host}:{port}/v1",
-        api_key=os.getenv("LLAMA_STACK_API_KEY", "fake"),
+        api_key=os.getenv("OGX_API_KEY", "fake"),
     )
 
     resolved_model = resolve_openai_model(client, model_id)

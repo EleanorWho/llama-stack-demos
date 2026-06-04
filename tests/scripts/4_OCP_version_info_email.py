@@ -1,6 +1,6 @@
-from llama_stack_client.lib.agents.agent import Agent
-from llama_stack_client.lib.agents.event_logger import EventLogger
-from llama_stack_client import LlamaStackClient
+from ogx_client.lib.agents.agent import Agent
+from ogx_client.lib.agents.event_logger import EventLogger
+from ogx_client import OgxClient
 import argparse
 import logging
 import uuid
@@ -26,18 +26,18 @@ args = parser.parse_args()
 
 model="meta-llama/Llama-3.2-3B-Instruct"
 
-# Connect to a llama stack server
+# Connect to an OGX server
 if args.remote:
     base_url = os.getenv("REMOTE_BASE_URL")
 else:
     base_url="http://localhost:8321"
 
-client = LlamaStackClient(
+client = OgxClient(
     base_url=base_url,
     provider_data={
         "tavily_search_api_key": os.getenv("TAVILY_SEARCH_API_KEY")
     })
-logger.info(f"Connected to Llama Stack server @ {base_url} \n")
+logger.info(f"Connected to OGX server @ {base_url} \n")
 
 # Get tool info and register tools
 registered_tools = client.tools.list()
@@ -56,7 +56,7 @@ agent = Agent(
     You have access to a number of tools.
     Whenever a tool is called, be sure return the Response in a friendly and helpful tone.
     When you are asked to search the web you must use a tool.
-    When signing off on emails, please be sure to include: - Sent from my llama-stack agent in the signature
+    When signing off on emails, please be sure to include: - Sent from my ogx agent in the signature
     """,
     tools=["builtin::websearch"],
     tool_config={"tool_choice":"auto"},

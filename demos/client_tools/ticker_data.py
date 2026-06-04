@@ -8,7 +8,7 @@ import json
 import pandas as pd
 import yfinance as yf
 
-from llama_stack_client.lib.agents.client_tool import client_tool
+from ogx_client.lib.agents.client_tool import client_tool
 
 
 @client_tool

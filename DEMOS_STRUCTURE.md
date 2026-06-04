@@ -1,10 +1,10 @@
-# Llama Stack Demos - Repository Structure
+# OGX Demos - Repository Structure
 
 ## Overview
 
-This document outlines the comprehensive structure for the llama-stack-demos repository. The demos are organized as progressive "building blocks" that build upon one another, starting with basic operations and advancing to complex multi-agent systems and production-ready applications.
+This document outlines the comprehensive structure for the ogx-demos repository. The demos are organized as progressive "building blocks" that build upon one another, starting with basic operations and advancing to complex multi-agent systems and production-ready applications.
 
-## Key Llama Stack APIs
+## Key OGX APIs
 
 **Based on the current codebase (January 2026), here are the actual APIs:**
 
@@ -41,7 +41,7 @@ This document outlines the comprehensive structure for the llama-stack-demos rep
 ## Repository Structure
 
 ```
-llama-stack-demos/
+ogx-demos/
 ├── README.md                           # Overview & quick start guide
 ├── DEMOS_STRUCTURE.md                  # This document
 ├── .env.example                        # Environment variables template
@@ -52,13 +52,13 @@ llama-stack-demos/
 │   ├── setup.md                        # Common setup instructions
 │   ├── troubleshooting.md             # Common issues & solutions
 │   ├── architecture.md                 # Architecture diagrams & explanations
-│   └── api_reference.md               # Llama Stack API quick reference
+│   └── api_reference.md               # OGX API quick reference
 │
 ├── demos/
 │   │
 │   ├── 01-foundations/                 # Phase 1: Basic Building Blocks
 │   │   ├── README.md                   # Overview of foundation concepts
-│   │   ├── 01_client_setup.py         # Connect to Llama Stack server
+│   │   ├── 01_client_setup.py         # Connect to OGX server
 │   │   ├── 02_chat_completion.py      # Basic inference with chat completions
 │   │   ├── 03_streaming_chat.py       # Streaming responses
 │   │   ├── 04_system_prompts.py       # Using system messages
@@ -140,13 +140,13 @@ llama-stack-demos/
 │
 ├── kubernetes/                          # K8s/OpenShift deployment manifests
 │   ├── README.md
-│   ├── llama-stack/                    # Llama Stack server deployment
+│   ├── ogx/                            # OGX server deployment
 │   ├── llama-serve/                    # vLLM model servers
 │   ├── mcp-servers/                    # MCP tool servers
 │   │   ├── ansible-mcp/
 │   │   ├── openshift-mcp/
 │   │   ├── slack-mcp/
-│   │   └── llamastack/
+│   │   └── ogx/
 │   ├── safety-model/                   # Safety shield deployment
 │   ├── observability/                  # Monitoring & logging
 │   └── kustomize/                      # Kustomize overlays
@@ -172,10 +172,10 @@ llama-stack-demos/
 
 ### Phase 1: Foundations (01-foundations/)
 
-**Learning Objectives**: Master the basic building blocks of Llama Stack
+**Learning Objectives**: Master the basic building blocks of OGX
 
 **Demos**:
-1. **Client Setup** - Connect to a Llama Stack server, check health
+1. **Client Setup** - Connect to an OGX server, check health
 2. **Chat Completion** - Basic inference using chat completions
 3. **Streaming Chat** - Stream responses for better UX
 4. **System Prompts** - Configure behavior with system messages
@@ -295,7 +295,7 @@ llama-stack-demos/
 **Foundations** → **Responses API** → **RAG** → **Advanced Tools** → **Multi-Agent** → **Production** → **Full Apps**
 
 Each phase builds on previous concepts:
-- Phase 1 introduces basic Llama Stack operations (inference, vectors, tools)
+- Phase 1 introduces basic OGX operations (inference, vectors, tools)
 - Phase 2 introduces the Responses API for agent-like behavior
 - Phase 3 combines Responses API with RAG
 - Phase 4 demonstrates complex multi-tool workflows
@@ -332,7 +332,7 @@ Learning Objectives:
 """
 
 # Standard imports
-from llama_stack_client import LlamaStackClient
+from ogx_client import OgxClient
 from shared.client import setup_client, load_config
 from shared.logging_config import setup_logging
 import argparse
@@ -365,7 +365,7 @@ if __name__ == "__main__":
 All demos use a common `.env` file:
 
 ```bash
-# Llama Stack Server
+# OGX Server
 LOCAL_BASE_URL=http://localhost:8321
 REMOTE_BASE_URL=https://your-server.example.com
 
@@ -464,7 +464,7 @@ To migrate the existing demos:
 
 1. **Preserve existing complex demos**:
    - Move `demos/rag_agentic/` → `demos/07-end-to-end-apps/knowledge_assistant/`
-   - Move `demos/a2a_llama_stack/` → `demos/05-multi-agent/04_agent_fleet/`
+   - Move `demos/a2a_ogx/` → `demos/05-multi-agent/04_agent_fleet/`
 
 2. **Extract building blocks**:
    - Extract concepts from `tests/scripts/0_simple_agent.py` → Phase 2 demos
@@ -522,12 +522,9 @@ A successful demo should:
 - [Architecture Overview](docs/architecture.md)
 
 ### External Documentation
-- [Llama Stack Documentation](https://llamastack.github.io/docs)
-- [Llama Stack GitHub](https://github.com/llamastack/llama-stack)
+- [OGX Documentation](https://ogx-ai.github.io/)
+- [OGX GitHub](https://github.com/ogx-ai/ogx)
 - [MCP Protocol](https://modelcontextprotocol.io/)
-- [Your agent, your rules: A deep dive into the Responses API with Llama Stack](https://developers.redhat.com/articles/2025/08/20/your-agent-your-rules-deep-dive-responses-api-llama-stack)
-- [Your AI agents, evolved: Modernize Llama Stack agents by migrating to the Responses API](https://developers.redhat.com/articles/2025/12/09/your-ai-agents-evolved-modernize-llama-stack-agents-migrating-responses-api)
-- [OpenAI API Compatibility](https://llama-stack.readthedocs.io/en/latest/openai/index.html)
 
 ## Contributing
 
@@ -540,4 +537,4 @@ See the main README for contribution guidelines. When adding new demos:
 
 ## Questions?
 
-Open an issue in the [repository](https://github.com/opendatahub-io/llama-stack-demos/issues) with questions or suggestions for improving this structure.
+Open an issue in the [repository](https://github.com/ogx-ai/ogx-demos/issues) with questions or suggestions for improving this structure.

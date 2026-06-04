@@ -3,7 +3,7 @@ Demo: Responses API - parallel_tool_calls
 
 Description:
 This demo shows how to use the parallel_tool_calls parameter with the
-OpenAI Responses API against a Llama Stack server. This parameter controls
+OpenAI Responses API against a OGX server. This parameter controls
 whether the model can issue multiple tool calls in a single response turn.
 
 Learning Objectives:
@@ -121,7 +121,7 @@ def main(
 
     client = OpenAI(
         base_url=f"{scheme}://{host}:{port}/v1",
-        api_key=os.getenv("LLAMA_STACK_API_KEY", "fake"),
+        api_key=os.getenv("OGX_API_KEY", "fake"),
     )
 
     resolved_model = resolve_openai_model(client, model_id)

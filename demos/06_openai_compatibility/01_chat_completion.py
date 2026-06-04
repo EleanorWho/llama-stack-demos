@@ -3,10 +3,10 @@ Demo: OpenAI-Compatible Chat Completion
 
 Description:
 This demo shows that existing OpenAI chat-completion code works against a
-Llama Stack server with only a base_url change.
+OGX server with only a base_url change.
 
 Learning Objectives:
-- Use the OpenAI Python SDK to talk to Llama Stack
+- Use the OpenAI Python SDK to talk to OGX
 - Perform non-streaming and streaming chat completions
 - Resolve an available model via the OpenAI-compatible models endpoint
 """
@@ -53,7 +53,7 @@ def main(
     host: str,
     port: int,
     model_id: str | None = None,
-    prompt: str = "Give me a short summary of Llama Stack.",
+    prompt: str = "Give me a short summary of OGX.",
     stream: bool = False,
     scheme: str = "http",
 ) -> None:
@@ -66,7 +66,7 @@ def main(
 
     client = OpenAI(
         base_url=f"{scheme}://{host}:{port}/v1",
-        api_key=os.getenv("LLAMA_STACK_API_KEY", "fake"),
+        api_key=os.getenv("OGX_API_KEY", "fake"),
     )
 
     resolved_model = resolve_openai_model(client, model_id)

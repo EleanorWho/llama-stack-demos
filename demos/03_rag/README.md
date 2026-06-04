@@ -1,7 +1,7 @@
 # RAG (Retrieval-Augmented Generation)
 
 ## Overview
-This folder teaches Retrieval-Augmented Generation (RAG) techniques using Llama Stack's vector stores and search capabilities. These examples show how to ground model responses in retrieved documents, combine multiple data sources, and optimize retrieval strategies.
+This folder teaches Retrieval-Augmented Generation (RAG) techniques using OGX's vector stores and search capabilities. These examples show how to ground model responses in retrieved documents, combine multiple data sources, and optimize retrieval strategies.
 
 ## Learning Objectives
 - Build basic RAG systems with file_search tool

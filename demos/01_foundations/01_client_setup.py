@@ -2,10 +2,10 @@
 Demo: Client Setup
 
 Description:
-This demo teaches the fundamentals of setting up and connecting to a Llama Stack server using the LlamaStackClient.
+This demo teaches the fundamentals of setting up and connecting to a OGX server using the OgxClient.
 
 Learning Objectives:
-- Initialize a LlamaStackClient with a specific host and port
+- Initialize a OgxClient with a specific host and port
 - Perform a health check to verify server connectivity
 - Handle connection failures gracefully
 """
@@ -19,7 +19,7 @@ Learning Objectives:
 from __future__ import annotations
 
 import fire
-from llama_stack_client import LlamaStackClient
+from ogx_client import OgxClient
 
 try:
     from dotenv import load_dotenv
@@ -35,7 +35,7 @@ def _maybe_load_dotenv() -> None:
 def main(host: str, port: int) -> None:
     _maybe_load_dotenv()
 
-    client = LlamaStackClient(base_url=f"http://{host}:{port}")
+    client = OgxClient(base_url=f"http://{host}:{port}")
     try:
         health = client.inspect.health()
     except Exception as exc:

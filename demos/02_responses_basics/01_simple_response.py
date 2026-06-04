@@ -22,7 +22,7 @@ from __future__ import annotations
 import os
 
 import fire
-from llama_stack_client import LlamaStackClient
+from ogx_client import OgxClient
 from termcolor import colored
 
 from demos.shared.utils import can_model_chat, check_model_is_available, get_any_available_chat_model
@@ -42,13 +42,13 @@ def main(
     host: str,
     port: int,
     model_id: str | None = None,
-    prompt: str = "Give me a short summary of Llama Stack.",
+    prompt: str = "Give me a short summary of OGX.",
     instructions: str = "You are a helpful assistant.",
 ) -> None:
     _maybe_load_dotenv()
 
-    client = LlamaStackClient(base_url=f"http://{host}:{port}")
-    resolved_model = model_id or os.getenv("LLAMA_STACK_MODEL")
+    client = OgxClient(base_url=f"http://{host}:{port}")
+    resolved_model = model_id or os.getenv("OGX_MODEL")
     if resolved_model is None:
         resolved_model = get_any_available_chat_model(client)
         if resolved_model is None:

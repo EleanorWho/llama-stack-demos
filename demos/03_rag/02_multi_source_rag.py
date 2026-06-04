@@ -24,7 +24,7 @@ import os
 from uuid import uuid4
 
 import fire
-from llama_stack_client import LlamaStackClient
+from ogx_client import OgxClient
 from termcolor import colored
 
 from demos.shared.utils import (
@@ -47,7 +47,7 @@ def _maybe_load_dotenv() -> None:
 
 
 def _create_vector_store(
-    client: LlamaStackClient, provider_id: str, embedding_model: str, embedding_dimension: int
+    client: OgxClient, provider_id: str, embedding_model: str, embedding_dimension: int
 ):
     # Each vector store can hold its own document set.
     return client.vector_stores.create(
@@ -61,7 +61,7 @@ def _create_vector_store(
 
 
 def _attach_text(
-    client: LlamaStackClient, vector_store_id: str, text: str, filename: str
+    client: OgxClient, vector_store_id: str, text: str, filename: str
 ) -> None:
     # Upload inline text as a file and attach it to the vector store.
     file_buffer = BytesIO(text.encode("utf-8"))
@@ -82,12 +82,12 @@ def main(
     port: int,
     model_id: str | None = None,
     embedding_model_id: str | None = None,
-    question: str = "What does Llama Stack provide?",
+    question: str = "What does OGX provide?",
 ) -> None:
     _maybe_load_dotenv()
 
-    client = LlamaStackClient(base_url=f"http://{host}:{port}")
-    resolved_model = model_id or os.getenv("LLAMA_STACK_MODEL")
+    client = OgxClient(base_url=f"http://{host}:{port}")
+    resolved_model = model_id or os.getenv("OGX_MODEL")
     if resolved_model is None:
         resolved_model = get_any_available_chat_model(client)
         if resolved_model is None:
@@ -130,13 +130,13 @@ def main(
         _attach_text(
             client,
             store_a.id,
-            "Llama Stack provides a unified API for models, tools, and vector stores.",
+            "OGX provides a unified API for models, tools, and vector stores.",
             "doc_a.txt",
         )
         _attach_text(
             client,
             store_b.id,
-            "Llama Stack supports serving models and building agentic workflows.",
+            "OGX supports serving models and building agentic workflows.",
             "doc_b.txt",
         )
 

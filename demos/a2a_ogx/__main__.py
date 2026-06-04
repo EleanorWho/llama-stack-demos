@@ -3,7 +3,7 @@ import logging
 import importlib
 import click
 
-from llama_stack_client import LlamaStackClient, Agent
+from ogx_client import OgxClient, Agent
 from common.server import A2AServer
 from common.types import AgentCard, AgentCapabilities, AgentSkill
 
@@ -28,7 +28,7 @@ def build_server(agent_name: str, host: str, port: int = None):
     tools_to_pass = agent_params_config.get("tools", [])
 
     agent = Agent(
-        client=LlamaStackClient(base_url=os.getenv("REMOTE_BASE_URL", "http://localhost:8321")),
+        client=OgxClient(base_url=os.getenv("REMOTE_BASE_URL", "http://localhost:8321")),
         model=os.getenv(agent_params_config["model_env_var"], agent_params_config["default_model"]),
         instructions=agent_params_config["instructions"],
         tools=tools_to_pass,
@@ -69,7 +69,7 @@ def main(agent_name, host, port):
     effective_port = port
     if port is None:
         try:
-            config_module_path = f"agents.a2a_llama_stack.agents.{agent_name.replace('-', '_')}.config"
+            config_module_path = f"agents.a2a_ogx.agents.{agent_name.replace('-', '_')}.config"
             config_module = importlib.import_module(config_module_path)
             effective_port = config_module.AGENT_CONFIG.get("default_port", "config_default")
         except Exception:
