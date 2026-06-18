@@ -105,7 +105,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "sum by(gen_ai_request_model) (rate(llama_stack_gen_ai_client_token_usage_sum{gen_ai_token_type=\"input\"}[5m]))",
+          "expr": "sum by(gen_ai_request_model) (rate(ogx_gen_ai_client_token_usage_sum{gen_ai_token_type=\"input\"}[5m]))",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "legendFormat": "__auto",
@@ -201,7 +201,7 @@
           "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "sum by(gen_ai_request_model) (rate(llama_stack_gen_ai_client_token_usage_sum{gen_ai_token_type=\"output\"}[5m]))",
+          "expr": "sum by(gen_ai_request_model) (rate(ogx_gen_ai_client_token_usage_sum{gen_ai_token_type=\"output\"}[5m]))",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "interval": "",
@@ -296,7 +296,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.95, sum by(le) (rate(llama_stack_http_server_duration_milliseconds_bucket[5m])))",
+          "expr": "histogram_quantile(0.95, sum by(le) (rate(ogx_http_server_duration_milliseconds_bucket[5m])))",
           "legendFormat": "p95",
           "refId": "A"
         },
@@ -305,7 +305,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.99, sum by(le) (rate(llama_stack_http_server_duration_milliseconds_bucket[5m])))",
+          "expr": "histogram_quantile(0.99, sum by(le) (rate(ogx_http_server_duration_milliseconds_bucket[5m])))",
           "legendFormat": "p99",
           "refId": "B"
         }
@@ -363,7 +363,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(llama_stack_http_server_duration_milliseconds_count)",
+          "expr": "sum(ogx_http_server_duration_milliseconds_count)",
           "refId": "A"
         }
       ],
@@ -420,7 +420,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(llama_stack_http_server_active_requests)",
+          "expr": "sum(ogx_http_server_active_requests)",
           "refId": "A"
         }
       ],
@@ -509,7 +509,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "rate(llama_stack_http_server_duration_milliseconds_count[5m])",
+          "expr": "rate(ogx_http_server_duration_milliseconds_count[5m])",
           "legendFormat": "{{http_target}} - {{http_status_code}}",
           "refId": "A"
         }
@@ -599,7 +599,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "rate(llama_stack_http_server_request_size_bytes_sum[5m])",
+          "expr": "rate(ogx_http_server_request_size_bytes_sum[5m])",
           "legendFormat": "Request",
           "refId": "A"
         },
@@ -608,7 +608,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "rate(llama_stack_http_server_response_size_bytes_sum[5m])",
+          "expr": "rate(ogx_http_server_response_size_bytes_sum[5m])",
           "legendFormat": "Response",
           "refId": "B"
         }
@@ -620,7 +620,7 @@
   "refresh": "5s",
   "schemaVersion": 39,
   "tags": [
-    "llama-stack"
+    "ogx"
   ],
   "templating": {
     "list": []
@@ -632,8 +632,8 @@
   "timeRangeUpdatedDuringEditOrView": false,
   "timepicker": {},
   "timezone": "browser",
-  "title": "Llama Stack Metrics",
-  "uid": "llama-stack-metrics",
+  "title": "OGX Metrics",
+  "uid": "ogx-metrics",
   "version": 17,
   "weekStart": ""
 }
