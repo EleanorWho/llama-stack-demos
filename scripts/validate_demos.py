@@ -64,9 +64,7 @@ def validate_file(path: Path) -> tuple[list[str], list[str]]:
 
     # 1. File naming
     if not DEMO_FILE_PATTERN.match(path.name):
-        errors.append(
-            f"{relative}: file name '{path.name}' does not match pattern NN_snake_case_name.py"
-        )
+        errors.append(f"{relative}: file name '{path.name}' does not match pattern NN_snake_case_name.py")
 
     # 2. Module docstring with required fields
     docstring = ast.get_docstring(tree)
@@ -124,10 +122,10 @@ def validate_file(path: Path) -> tuple[list[str], list[str]]:
             and node.func.attr in ("insert", "append")
             and _is_sys_path(node.func.value)
         ):
-                warnings.append(
-                    f"{relative}:{node.lineno}: uses sys.path manipulation — "
-                    "use package imports instead (from demos.shared.utils import ...)"
-                )
+            warnings.append(
+                f"{relative}:{node.lineno}: uses sys.path manipulation — "
+                "use package imports instead (from demos.shared.utils import ...)"
+            )
 
     return errors, warnings
 

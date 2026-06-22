@@ -22,14 +22,12 @@ Learning Objectives:
 from __future__ import annotations
 
 import os
-import sys
 
 import fire
 from openai import OpenAI
 from termcolor import colored
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-from shared.utils import resolve_openai_model
+from demos.shared.utils import resolve_openai_model
 
 try:
     from dotenv import load_dotenv
