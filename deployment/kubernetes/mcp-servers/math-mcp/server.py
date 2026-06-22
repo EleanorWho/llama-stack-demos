@@ -4,12 +4,13 @@ Math MCP Server - Simple HTTP version
 A basic HTTP server that exposes math operations and MCP-compatible endpoints.
 """
 
-import math
 import logging
-from typing import Any, Dict, List
+import math
+from typing import Any
+
+import uvicorn
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import uvicorn
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -38,12 +39,12 @@ class MathResult(BaseModel):
 class MCPTool(BaseModel):
     name: str
     description: str
-    inputSchema: Dict
+    inputSchema: dict
 
 
 # MCP Protocol Models
 class MCPListToolsResponse(BaseModel):
-    tools: List[MCPTool]
+    tools: list[MCPTool]
 
 
 @app.get("/")
@@ -53,11 +54,7 @@ async def root():
         "service": "Math MCP Server",
         "status": "running",
         "version": "1.0.0",
-        "endpoints": {
-            "health": "/health",
-            "mcp_tools": "/mcp/tools",
-            "calculate": "/calculate"
-        }
+        "endpoints": {"health": "/health", "mcp_tools": "/mcp/tools", "calculate": "/calculate"},
     }
 
 
@@ -207,7 +204,7 @@ async def calculate(op: MathOperation) -> MathResult:
         elif operation == "power":
             if op.base is None or op.exponent is None:
                 raise HTTPException(status_code=400, detail="Parameters 'base' and 'exponent' are required")
-            result = op.base ** op.exponent
+            result = op.base**op.exponent
             return MathResult(result=result, message=f"{op.base} ^ {op.exponent} = {result}")
 
         elif operation == "sqrt":
@@ -239,7 +236,7 @@ async def calculate(op: MathOperation) -> MathResult:
         raise
     except Exception as e:
         logger.error(f"Error executing {operation}: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Error executing operation: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error executing operation: {str(e)}") from e
 
 
 @app.get("/sse")
@@ -247,15 +244,10 @@ async def sse_endpoint():
     """SSE endpoint placeholder for MCP protocol"""
     return {
         "message": "MCP SSE transport not yet implemented",
-        "alternative": "Use /mcp/tools to list tools and /calculate to execute operations"
+        "alternative": "Use /mcp/tools to list tools and /calculate to execute operations",
     }
 
 
 if __name__ == "__main__":
     logger.info("Starting Math MCP Server on port 8080")
-    uvicorn.run(
-        app,
-        host="0.0.0.0",
-        port=8080,
-        log_level="info"
-    )
+    uvicorn.run(app, host="0.0.0.0", port=8080, log_level="info")

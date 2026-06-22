@@ -20,9 +20,8 @@ Learning Objectives:
 from __future__ import annotations
 
 import fire
-from termcolor import colored
-
 from ogx_client import OgxClient
+from termcolor import colored
 
 try:
     from dotenv import load_dotenv

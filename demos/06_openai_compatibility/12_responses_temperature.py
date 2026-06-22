@@ -75,7 +75,7 @@ def main(
             input=prompt,
             temperature=0.0,
         )
-        print(f"  Run {i+1}: {response.output_text}")
+        print(f"  Run {i + 1}: {response.output_text}")
 
     # --- Example 2: Medium temperature ---
     print(colored("\n--- temperature=0.7 (balanced) ---", "cyan"))
@@ -85,7 +85,7 @@ def main(
             input=prompt,
             temperature=0.7,
         )
-        print(f"  Run {i+1}: {response.output_text}")
+        print(f"  Run {i + 1}: {response.output_text}")
 
     # --- Example 3: High temperature (creative) ---
     print(colored("\n--- temperature=1.5 (creative) ---", "cyan"))
@@ -95,7 +95,7 @@ def main(
             input=prompt,
             temperature=1.5,
         )
-        print(f"  Run {i+1}: {response.output_text}")
+        print(f"  Run {i + 1}: {response.output_text}")
 
 
 if __name__ == "__main__":

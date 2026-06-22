@@ -26,13 +26,12 @@ try:
     from dotenv import load_dotenv
 except Exception:
     load_dotenv = None
+from ogx_client import Agent, OgxClient
 from termcolor import colored
 
 from demos.client_tools.calculator import calculator
 from demos.client_tools.ticker_data import get_ticker_data
 from demos.client_tools.web_search import WebSearchTool
-from ogx_client import Agent, OgxClient
-
 from demos.shared.utils import can_model_chat, check_model_is_available, get_any_available_chat_model
 
 
@@ -72,9 +71,7 @@ def _route_subtask(prompt: str, web_available: bool) -> str:
         return "finance"
     if any(token in lower_prompt for token in ["calculate", "sum", "math"]):
         return "math"
-    if any(char.isdigit() for char in lower_prompt) and any(
-        token in lower_prompt for token in ["+", "-", "*", "/"]
-    ):
+    if any(char.isdigit() for char in lower_prompt) and any(token in lower_prompt for token in ["+", "-", "*", "/"]):
         return "math"
     if any(token in lower_prompt for token in ["latest", "who", "when"]):
         return "research" if web_available else "general"
@@ -174,10 +171,7 @@ def main(host: str, port: int, model_id: str | None = None):
         subtask_results.append(f"- {subtask}\n  Result: {text_output}")
         print(text_output)
 
-    synthesis = (
-        "Synthesize the following subtask results into a concise update:\n\n"
-        + "\n\n".join(subtask_results)
-    )
+    synthesis = "Synthesize the following subtask results into a concise update:\n\n" + "\n\n".join(subtask_results)
     coordinator = agents["general"]
     coordinator_session = sessions["general"]
     print(colored("[coordination] synthesizing final response", "green"))

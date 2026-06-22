@@ -51,11 +51,7 @@ def resolve_model(client: OgxClient, model_id: str | None, env_var: str = "OGX_C
     if resolved:
         return resolved
 
-    candidates = [
-        _get_model_id(m)
-        for m in _list_models(client)
-        if _is_llm_model(m) and _get_model_id(m)
-    ]
+    candidates = [_get_model_id(m) for m in _list_models(client) if _is_llm_model(m) and _get_model_id(m)]
 
     for mid in candidates:
         if can_model_chat(client, mid):
@@ -114,11 +110,7 @@ def get_any_available_model(client: OgxClient):
     resolved = os.getenv("OGX_CHAT_MODEL") or None
     if resolved:
         return resolved
-    candidates = [
-        _get_model_id(m)
-        for m in _list_models(client)
-        if _is_llm_model(m) and _get_model_id(m)
-    ]
+    candidates = [_get_model_id(m) for m in _list_models(client) if _is_llm_model(m) and _get_model_id(m)]
     if not candidates:
         print(colored("No available models.", "red"))
         return None
@@ -130,11 +122,7 @@ def get_any_available_chat_model(client: OgxClient):
     if resolved:
         return resolved
 
-    candidates = [
-        _get_model_id(m)
-        for m in _list_models(client)
-        if _is_llm_model(m) and _get_model_id(m)
-    ]
+    candidates = [_get_model_id(m) for m in _list_models(client) if _is_llm_model(m) and _get_model_id(m)]
     if not candidates:
         print(colored("No available models.", "red"))
         return None
@@ -157,9 +145,7 @@ def resolve_embedding_model(client: OgxClient, model_id: str | None = None) -> s
 
 def _get_any_embedding_model(client: OgxClient) -> str | None:
     embedding_models = [
-        _get_model_id(m)
-        for m in _list_models(client)
-        if _get_model_id(m) and _get_model_type(m) == "embedding"
+        _get_model_id(m) for m in _list_models(client) if _get_model_id(m) and _get_model_type(m) == "embedding"
     ]
     if not embedding_models:
         print(colored("No available embedding models.", "red"))
@@ -220,9 +206,7 @@ def build_context(search_results) -> str:
         return ""
     context_lines = ["Context from uploaded documents:"]
     for result in search_results:
-        snippet = " ".join(
-            content.text.strip() for content in result.content if getattr(content, "text", None)
-        ).strip()
+        snippet = " ".join(content.text.strip() for content in result.content if getattr(content, "text", None)).strip()
         if not snippet:
             continue
         score = result.score if result.score is not None else 0.0

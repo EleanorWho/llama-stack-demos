@@ -19,8 +19,8 @@ Learning Objectives:
 
 from __future__ import annotations
 
-from io import BytesIO
 import os
+from io import BytesIO
 from uuid import uuid4
 
 import fire
@@ -31,8 +31,8 @@ from demos.shared.utils import (
     can_model_chat,
     check_model_is_available,
     get_any_available_chat_model,
-    resolve_embedding_model,
     get_embedding_dimension,
+    resolve_embedding_model,
 )
 
 try:

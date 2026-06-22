@@ -6,11 +6,10 @@
 
 import asyncio
 import json
-from typing import Dict, Any
+from typing import Any
 
 import httpx
 import requests
-
 from ogx_client.lib.agents.client_tool import ClientTool
 
 
@@ -33,9 +32,8 @@ class BraveSearch:
     def _clean_brave_response(self, search_response, top_k=3):
         query = None
         clean_response = []
-        if "query" in search_response:
-            if "original" in search_response["query"]:
-                query = search_response["query"]["original"]
+        if "query" in search_response and "original" in search_response["query"]:
+            query = search_response["query"]["original"]
         if "mixed" in search_response:
             mixed_results = search_response["mixed"]
             for m in mixed_results["main"][:top_k]:
@@ -52,17 +50,13 @@ class BraveSearch:
                         "date",
                         "extra_snippets",
                     ]
-                    cleaned = {
-                        k: v for k, v in results[idx].items() if k in selected_keys
-                    }
+                    cleaned = {k: v for k, v in results[idx].items() if k in selected_keys}
                 elif r_type == "faq":
                     # For FAQ data - take a list of all the questions & answers
                     selected_keys = ["type", "question", "answer", "title", "url"]
                     cleaned = []
                     for q in results:
-                        cleaned.append(
-                            {k: v for k, v in q.items() if k in selected_keys}
-                        )
+                        cleaned.append({k: v for k, v in q.items() if k in selected_keys})
                 elif r_type == "infobox":
                     idx = m["index"]
                     selected_keys = [
@@ -72,9 +66,7 @@ class BraveSearch:
                         "description",
                         "long_desc",
                     ]
-                    cleaned = {
-                        k: v for k, v in results[idx].items() if k in selected_keys
-                    }
+                    cleaned = {k: v for k, v in results[idx].items() if k in selected_keys}
                 elif r_type == "videos":
                     selected_keys = [
                         "type",
@@ -85,9 +77,7 @@ class BraveSearch:
                     ]
                     cleaned = []
                     for q in results:
-                        cleaned.append(
-                            {k: v for k, v in q.items() if k in selected_keys}
-                        )
+                        cleaned.append({k: v for k, v in q.items() if k in selected_keys})
                 elif r_type == "locations":
                     # For location data - take a list of all the locations
                     selected_keys = [
@@ -104,9 +94,7 @@ class BraveSearch:
                     ]
                     cleaned = []
                     for q in results:
-                        cleaned.append(
-                            {k: v for k, v in q.items() if k in selected_keys}
-                        )
+                        cleaned.append({k: v for k, v in q.items() if k in selected_keys})
                 elif r_type == "news":
                     # For news data - take a list of all the news articles
                     selected_keys = [
@@ -117,9 +105,7 @@ class BraveSearch:
                     ]
                     cleaned = []
                     for q in results:
-                        cleaned.append(
-                            {k: v for k, v in q.items() if k in selected_keys}
-                        )
+                        cleaned.append({k: v for k, v in q.items() if k in selected_keys})
                 else:
                     cleaned = []
 
@@ -165,9 +151,7 @@ class WebSearchTool(ClientTool):
 
     def __init__(self, engine: str, api_key: str):
         self.api_key = api_key
-        assert engine in ["brave", "tavily"], (
-            "Invalid engine, use one of brave or tavily"
-        )
+        assert engine in ["brave", "tavily"], "Invalid engine, use one of brave or tavily"
         if engine == "brave":
             self.engine = BraveSearch(api_key)
         else:
@@ -179,7 +163,7 @@ class WebSearchTool(ClientTool):
     def get_description(self) -> str:
         return "Search the web for a given query"
 
-    def get_input_schema(self) -> Dict[str, Any]:
+    def get_input_schema(self) -> dict[str, Any]:
         return {
             "type": "object",
             "properties": {

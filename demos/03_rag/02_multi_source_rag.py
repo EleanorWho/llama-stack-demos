@@ -19,8 +19,8 @@ Learning Objectives:
 
 from __future__ import annotations
 
-from io import BytesIO
 import os
+from io import BytesIO
 from uuid import uuid4
 
 import fire
@@ -31,8 +31,8 @@ from demos.shared.utils import (
     can_model_chat,
     check_model_is_available,
     get_any_available_chat_model,
-    resolve_embedding_model,
     get_embedding_dimension,
+    resolve_embedding_model,
 )
 
 try:
@@ -46,9 +46,7 @@ def _maybe_load_dotenv() -> None:
         load_dotenv()
 
 
-def _create_vector_store(
-    client: OgxClient, provider_id: str, embedding_model: str, embedding_dimension: int
-):
+def _create_vector_store(client: OgxClient, provider_id: str, embedding_model: str, embedding_dimension: int):
     # Each vector store can hold its own document set.
     return client.vector_stores.create(
         name=f"multi_source_{uuid4()}",
@@ -60,9 +58,7 @@ def _create_vector_store(
     )
 
 
-def _attach_text(
-    client: OgxClient, vector_store_id: str, text: str, filename: str
-) -> None:
+def _attach_text(client: OgxClient, vector_store_id: str, text: str, filename: str) -> None:
     # Upload inline text as a file and attach it to the vector store.
     file_buffer = BytesIO(text.encode("utf-8"))
     file_buffer.name = filename

@@ -138,9 +138,7 @@ def main(
         except (json.JSONDecodeError, ValueError) as exc:
             result = json.dumps({"error": f"Invalid arguments for {fn_name}: {exc}"})
             print(colored(f"Tool result: {result}", "yellow"))
-            messages.append(
-                {"role": "tool", "tool_call_id": tool_call.id, "content": result}
-            )
+            messages.append({"role": "tool", "tool_call_id": tool_call.id, "content": result})
             continue
         print(colored(f"Tool call: {fn_name}({fn_args})", "yellow"))
 

@@ -81,8 +81,7 @@ def main(
                 if hasattr(content_part, "logprobs") and content_part.logprobs:
                     print(colored("\nToken logprobs (first 5 positions):", "cyan"))
                     for i, token_logprob in enumerate(content_part.logprobs[:5]):
-                        print(f"  Position {i}: token='{token_logprob.token}' "
-                              f"logprob={token_logprob.logprob:.4f}")
+                        print(f"  Position {i}: token='{token_logprob.token}' logprob={token_logprob.logprob:.4f}")
                         if hasattr(token_logprob, "top_logprobs") and token_logprob.top_logprobs:
                             for alt in token_logprob.top_logprobs:
                                 print(f"    alt: '{alt.token}' logprob={alt.logprob:.4f}")

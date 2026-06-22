@@ -51,10 +51,7 @@ def main(
     host: str,
     port: int,
     model_id: str | None = None,
-    prompt: str = (
-        "Search the web for who was the 42nd president of the United States "
-        "and answer with the name only."
-    ),
+    prompt: str = ("Search the web for who was the 42nd president of the United States and answer with the name only."),
 ) -> None:
     _maybe_load_dotenv()
 

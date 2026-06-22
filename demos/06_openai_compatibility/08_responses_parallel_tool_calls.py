@@ -98,11 +98,13 @@ def _handle_tool_calls(response) -> list[dict]:
             else:
                 result = fn(**fn_args)
             print(colored(f"  Tool result: {result}", "yellow"))
-            results.append({
-                "type": "function_call_output",
-                "call_id": item.call_id,
-                "output": result,
-            })
+            results.append(
+                {
+                    "type": "function_call_output",
+                    "call_id": item.call_id,
+                    "output": result,
+                }
+            )
     return results
 
 
@@ -150,7 +152,11 @@ def main(
             model=resolved_model,
             input=[
                 {"role": "user", "content": prompt},
-                *[{"type": "function_call", "name": item.name, "call_id": item.call_id, "arguments": item.arguments} for item in response.output if item.type == "function_call"],
+                *[
+                    {"type": "function_call", "name": item.name, "call_id": item.call_id, "arguments": item.arguments}
+                    for item in response.output
+                    if item.type == "function_call"
+                ],
                 *tool_results,
             ],
             tools=TOOLS,
@@ -176,7 +182,11 @@ def main(
             model=resolved_model,
             input=[
                 {"role": "user", "content": prompt},
-                *[{"type": "function_call", "name": item.name, "call_id": item.call_id, "arguments": item.arguments} for item in response.output if item.type == "function_call"],
+                *[
+                    {"type": "function_call", "name": item.name, "call_id": item.call_id, "arguments": item.arguments}
+                    for item in response.output
+                    if item.type == "function_call"
+                ],
                 *tool_results,
             ],
             tools=TOOLS,

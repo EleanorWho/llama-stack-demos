@@ -80,8 +80,7 @@ def main(
     print(f"Output: {response.output_text}")
     print(f"Status: {response.status}")
     if hasattr(response, "usage") and response.usage:
-        print(colored(f"Usage - Input: {response.usage.input_tokens}, "
-                      f"Output: {response.usage.output_tokens}", "green"))
+        print(colored(f"Usage - Input: {response.usage.input_tokens}, Output: {response.usage.output_tokens}", "green"))
 
     # --- Example 2: Precise factual response ---
     print(colored("\n--- Factual Q&A with combined params ---", "cyan"))

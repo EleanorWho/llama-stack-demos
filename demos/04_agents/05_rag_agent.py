@@ -29,6 +29,7 @@ try:
 except Exception:
     load_dotenv = None
 import time
+
 from ogx_client import Agent, AgentEventLogger, OgxClient
 from termcolor import colored
 
@@ -36,8 +37,8 @@ from demos.shared.utils import (
     can_model_chat,
     check_model_is_available,
     get_any_available_chat_model,
-    resolve_embedding_model,
     get_embedding_dimension,
+    resolve_embedding_model,
 )
 
 
@@ -57,8 +58,7 @@ def main(
         "lora_finetune.rst",
     ]
     document_urls = [
-        f"https://raw.githubusercontent.com/pytorch/torchtune/main/docs/source/tutorials/{url}"
-        for url in urls
+        f"https://raw.githubusercontent.com/pytorch/torchtune/main/docs/source/tutorials/{url}" for url in urls
     ]
 
     client = OgxClient(base_url=f"http://{host}:{port}")
@@ -90,9 +90,7 @@ def main(
         print(colored("Unable to determine embedding dimension.", "red"))
         return
 
-    vector_providers = [
-        provider for provider in client.providers.list() if provider.api == "vector_io"
-    ]
+    vector_providers = [provider for provider in client.providers.list() if provider.api == "vector_io"]
     if not vector_providers:
         print(colored("No available vector_io providers. Exiting.", "red"))
         return
