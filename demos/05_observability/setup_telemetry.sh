@@ -6,12 +6,12 @@
 # This source code is licensed under the terms described in the LICENSE file in
 # the root directory of this source tree.
 
-# Telemetry Setup Script for Llama Stack
+# Telemetry Setup Script for OGX
 # This script sets up Jaeger, OpenTelemetry Collector, Prometheus, and Grafana using Podman
 # For whoever is interested in testing the telemetry stack, you can run this script to set up the stack.
 #    export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 #    export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
-#    export OTEL_SERVICE_NAME=my-llama-app
+#    export OTEL_SERVICE_NAME=my-ogx-app
 # Then run the distro server
 
 set -Eeuo pipefail
@@ -71,7 +71,7 @@ if [[ -z "$CONTAINER_RUNTIME" ]]; then
   fi
 fi
 
-echo "🚀 Setting up telemetry stack for Llama Stack using $CONTAINER_RUNTIME..."
+echo "🚀 Setting up telemetry stack for OGX using $CONTAINER_RUNTIME..."
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -83,7 +83,7 @@ fi
 
 # Create a network for the services
 echo "📡 Creating $CONTAINER_RUNTIME network..."
-$CONTAINER_RUNTIME network create llama-telemetry 2>/dev/null || echo "Network already exists"
+$CONTAINER_RUNTIME network create ogx-telemetry 2>/dev/null || echo "Network already exists"
 
 # Stop and remove existing containers
 echo "🧹 Cleaning up existing containers..."
@@ -93,7 +93,7 @@ $CONTAINER_RUNTIME rm jaeger otel-collector prometheus grafana 2>/dev/null || tr
 # Start Jaeger
 echo "🔍 Starting Jaeger..."
 $CONTAINER_RUNTIME run -d --name jaeger \
-  --network llama-telemetry \
+  --network ogx-telemetry \
   -e COLLECTOR_ZIPKIN_HOST_PORT=:9411 \
   -p 16686:16686 \
   -p 14250:14250 \
@@ -103,7 +103,7 @@ $CONTAINER_RUNTIME run -d --name jaeger \
 # Start OpenTelemetry Collector
 echo "📊 Starting OpenTelemetry Collector..."
 $CONTAINER_RUNTIME run -d --name otel-collector \
-  --network llama-telemetry \
+  --network ogx-telemetry \
   -p 4318:4318 \
   -p 4317:4317 \
   -p 9464:9464 \
@@ -115,7 +115,7 @@ $CONTAINER_RUNTIME run -d --name otel-collector \
 # Start Prometheus
 echo "📈 Starting Prometheus..."
 $CONTAINER_RUNTIME run -d --name prometheus \
-  --network llama-telemetry \
+  --network ogx-telemetry \
   -p 9090:9090 \
   -v "$SCRIPT_DIR/prometheus.yml:/etc/prometheus/prometheus.yml:Z" \
   docker.io/prom/prometheus:latest \
@@ -130,13 +130,13 @@ $CONTAINER_RUNTIME run -d --name prometheus \
 # Note: Using 11.0.0 because grafana:latest arm64 image has a broken /run.sh (0 bytes)
 echo "📊 Starting Grafana..."
 $CONTAINER_RUNTIME run -d --name grafana \
-  --network llama-telemetry \
+  --network ogx-telemetry \
   -p 3000:3000 \
   -e GF_SECURITY_ADMIN_PASSWORD=admin \
   -e GF_USERS_ALLOW_SIGN_UP=false \
   -v "$SCRIPT_DIR/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml:Z" \
   -v "$SCRIPT_DIR/grafana-dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml:Z" \
-  -v "$SCRIPT_DIR/llama-stack-dashboard.json:/etc/grafana/provisioning/dashboards/llama-stack-dashboard.json:Z" \
+  -v "$SCRIPT_DIR/ogx-dashboard.json:/etc/grafana/provisioning/dashboards/ogx-dashboard.json:Z" \
   docker.io/grafana/grafana:11.0.0
 
 # Wait for services to start
@@ -156,14 +156,14 @@ echo "   Prometheus:       http://localhost:9090"
 echo "   Grafana:          http://localhost:3000 (admin/admin)"
 echo "   OTEL Collector:   http://localhost:4318 (OTLP endpoint)"
 echo ""
-echo "🔧 Environment variables for Llama Stack:"
+echo "🔧 Environment variables for OGX:"
 echo "   export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318"
 echo "   export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf"
-echo "   export OTEL_SERVICE_NAME=my-llama-app"
+echo "   export OTEL_SERVICE_NAME=my-ogx-app"
 echo ""
 echo "📊 Next steps:"
 echo "   1. Set the environment variables above"
-echo "   2. Start your Llama Stack application"
+echo "   2. Start your OGX application"
 echo "   3. Make some inference calls to generate metrics"
 echo "   4. Check Jaeger for traces: http://localhost:16686"
 echo "   5. Check Prometheus for metrics: http://localhost:9090"
@@ -177,4 +177,4 @@ echo ""
 echo "🧹 To clean up when done:"
 echo "   $CONTAINER_RUNTIME stop jaeger otel-collector prometheus grafana"
 echo "   $CONTAINER_RUNTIME rm jaeger otel-collector prometheus grafana"
-echo "   $CONTAINER_RUNTIME network rm llama-telemetry"
+echo "   $CONTAINER_RUNTIME network rm ogx-telemetry"

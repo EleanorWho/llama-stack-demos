@@ -1,20 +1,20 @@
-# Kubernetes Deployment Guide for Llama Stack
+# Kubernetes Deployment Guide for OGX
 
-This guide demonstrates how to deploy Llama Stack and vLLM servers in a Kubernetes cluster using Kind and the Llama Stack Kubernetes operator.
+This guide demonstrates how to deploy OGX and vLLM servers in a Kubernetes cluster using Kind and the OGX Kubernetes operator.
 
 ## Overview
 
 This deployment uses:
 - **vLLM**: OpenAI-compatible inference server for serving LLM models
-- **Llama Stack**: Unified API for interacting with LLM models
-- **Llama Stack Kubernetes Operator**: Manages Llama Stack deployments via custom resources
+- **OGX**: Unified API for interacting with LLM models
+- **OGX Kubernetes Operator**: Manages OGX deployments via custom resources
 
 ## Prerequisites
 
 ### 1. Create a Kind Cluster
 
 ```bash
-kind create cluster --image kindest/node:v1.32.0 --name llama-stack-test
+kind create cluster --image kindest/node:v1.32.0 --name ogx-test
 ```
 
 ### 2. Set Up Hugging Face Token
@@ -52,48 +52,48 @@ The vLLM server will:
 - Mount model cache at `/root/.cache/huggingface`
 - Use the HF token for authentication
 
-### Step 2: Install Llama Stack Operator
+### Step 2: Install OGX Operator
 
-Install the Llama Stack Kubernetes operator:
+Install the OGX Kubernetes operator:
 
 ```bash
 # Option 1: Apply from remote URL
-kubectl apply -f https://raw.githubusercontent.com/llamastack/llama-stack-k8s-operator/main/release/operator.yaml
+kubectl apply -f https://raw.githubusercontent.com/ogx-ai/ogx-k8s-operator/main/release/operator.yaml
 ```
 
 Verify the operator is running:
 
 ```bash
-kubectl get pods -n llama-stack-k8s-operator-system
+kubectl get pods -n ogx-k8s-operator-system
 ```
 
-### Step 3: Deploy Llama Stack
+### Step 3: Deploy OGX
 
-Create a `LlamaStackDistribution` custom resource:
+Create an `OGXServer` custom resource:
 
 ```bash
-# Create Llama Stack distribution
-kubectl apply -f llama-stack/00-lls-cr.yaml
+# Create OGX distribution
+kubectl apply -f ogx/00-lls-cr.yaml
 ```
 
-This creates a Llama Stack deployment that:
+This creates a OGX deployment that:
 - Uses the "starter" distribution
 - Exposes port 8321
 - Connects to the vLLM service at `http://vllm-server.default.svc.cluster.local:8000/v1`
-- Allocates 20Gi of storage for Llama Stack data
+- Allocates 20Gi of storage for OGX data
 
 ### Step 4: Test the Deployment
 
-Forward the Llama Stack port to your local machine:
+Forward the OGX port to your local machine:
 
 ```bash
-kubectl port-forward svc/llamastack-vllm 8321:8321
+kubectl port-forward svc/ogx-vllm 8321:8321
 ```
 
-Test the deployment using the Llama Stack client:
+Test the deployment using the OGX client:
 
 ```bash
-llama-stack-client --endpoint http://localhost:8321 inference chat-completion --message "hello, what model are you?"
+ogx-client --endpoint http://localhost:8321 inference chat-completion --message "hello, what model are you?"
 ```
 
 ## Configuration Files
@@ -117,8 +117,8 @@ vllm-serve/
         └── kustomization.yaml
 ```
 
-### Llama Stack (`llama-stack/`)
-- `00-lls-cr.yaml` - LlamaStackDistribution custom resource
+### OGX (`ogx/`)
+- `00-lls-cr.yaml` - OGXServer custom resource
 
 ## Troubleshooting
 
@@ -136,22 +136,22 @@ kubectl run curl --rm -it --image=curlimages/curl -- /bin/sh
 curl http://vllm-server.default.svc.cluster.local:8000/v1/models
 ```
 
-### Llama Stack Issues
+### OGX Issues
 
 Inspect the custom resource:
 ```bash
-kubectl describe llamastackdistribution llamastack-vllm
+kubectl describe ogxserver ogx-vllm
 ```
 
 Check operator logs:
 ```bash
-kubectl logs -n llama-stack-k8s-operator-system -l control-plane=controller-manager
+kubectl logs -n ogx-k8s-operator-system -l control-plane=controller-manager
 ```
 
-Check Llama Stack pod:
+Check OGX pod:
 ```bash
-kubectl get pods -l app.kubernetes.io/instance=llamastack-vllm
-kubectl logs -l app.kubernetes.io/instance=llamastack-vllm
+kubectl get pods -l app.kubernetes.io/instance=ogx-vllm
+kubectl logs -l app.kubernetes.io/instance=ogx-vllm
 ```
 
 ## Customization
@@ -164,31 +164,31 @@ Edit `vllm-serve/base/02-vllm-server-deploy.yaml` and change the model in the ar
 args: ["serve", "your-model-name"]
 ```
 
-### Custom Llama Stack Configuration
+### Custom OGX Configuration
 
-To use a custom `config.yaml`, create a ConfigMap and reference it in the `LlamaStackDistribution` resource. See the [LlamaStackDistribution API documentation](https://github.com/llamastack/llama-stack-k8s-operator) for details.
+To use a custom `config.yaml`, create a ConfigMap and reference it in the `OGXServer` resource. See the [OGXServer API documentation](https://github.com/ogx-ai/ogx-k8s-operator) for details.
 
 ## Related Resources
 
-- [Llama Stack Documentation](https://llamastack.io)
-- [Llama Stack Kubernetes Operator](https://github.com/llamastack/llama-stack-k8s-operator)
+- [OGX Documentation](https://ogx-ai.github.io/)
+- [OGX Kubernetes Operator](https://github.com/ogx-ai/ogx-k8s-operator)
 - [vLLM Documentation](https://docs.vllm.ai)
-- [LlamaStackDistribution API Reference](https://github.com/llamastack/llama-stack-k8s-operator/blob/main/docs/api-reference.md)
+- [OGXServer API Reference](https://github.com/ogx-ai/ogx-k8s-operator/blob/main/docs/api-reference.md)
 
 ## Clean Up
 
 To remove all resources:
 
 ```bash
-# Delete Llama Stack deployment
-kubectl delete -f llama-stack/00-lls-cr.yaml
+# Delete OGX deployment
+kubectl delete -f ogx/00-lls-cr.yaml
 
 # Delete vLLM resources (use the same overlay you deployed with)
 kubectl delete -k vllm-serve/overlays/x86_64/  # or arm64
 
 # Delete operator
-kubectl delete -f https://raw.githubusercontent.com/llamastack/llama-stack-k8s-operator/main/release/operator.yaml
+kubectl delete -f https://raw.githubusercontent.com/ogx-ai/ogx-k8s-operator/main/release/operator.yaml
 
 # Delete Kind cluster
-kind delete cluster --name llama-stack-test
+kind delete cluster --name ogx-test
 ```

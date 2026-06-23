@@ -1,0 +1,20 @@
+apiVersion: ogx.io/v1beta1
+kind: OGXServer
+metadata:
+  name: ogx-vllm
+spec:
+  distribution:
+    name: starter
+  workload:
+    replicas: 1
+    storage:
+      size: "20Gi"
+      mountPath: "/.ogx"
+    overrides:
+      env:
+      - name: VLLM_URL
+        value: "http://vllm-server.default.svc.cluster.local:8000/v1"
+      - name: VLLM_MAX_TOKENS
+        value: "4096"
+      - name: VLLM_API_TOKEN
+        value: "fake"

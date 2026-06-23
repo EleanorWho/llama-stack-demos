@@ -1,21 +1,21 @@
 #!/bin/bash
-# Test Math MCP Server integration with Llama Stack using curl
+# Test Math MCP Server integration with OGX using curl
 
 echo "========================================"
-echo "Math MCP Server + Llama Stack Integration Test"
+echo "Math MCP Server + OGX Integration Test"
 echo "========================================"
 
-LLAMA_STACK_URL="http://localhost:8321"
+OGX_URL="http://localhost:8321"
 MATH_MCP_URL="http://math-mcp-server.default.svc.cluster.local:8080"
 
-echo -e "\n1. Verify Llama Stack is accessible:"
-curl -s $LLAMA_STACK_URL/v1/models | jq '.data[0].id // "No models found"'
+echo -e "\n1. Verify OGX is accessible:"
+curl -s $OGX_URL/v1/models | jq '.data[0].id // "No models found"'
 
 echo -e "\n2. List registered toolgroups:"
-curl -s $LLAMA_STACK_URL/v1/toolgroups | jq -r '.data[] | "  - \(.identifier) (\(.provider_id))"'
+curl -s $OGX_URL/v1/toolgroups | jq -r '.data[] | "  - \(.identifier) (\(.provider_id))"'
 
 echo -e "\n3. Get math-tools toolgroup details:"
-curl -s $LLAMA_STACK_URL/v1/toolgroups/math-tools | jq .
+curl -s $OGX_URL/v1/toolgroups/math-tools | jq .
 
 echo -e "\n4. Test Math MCP Server directly (from within cluster):"
 TOOL_COUNT=$(kubectl run curl-test --rm -i --restart=Never --image=curlimages/curl -- \
@@ -30,14 +30,14 @@ kubectl run curl-test --rm -i --restart=Never --image=curlimages/curl -- \
 
 echo -e "\n========================================"
 echo "Summary:"
-echo "  ✅ Llama Stack is running"
+echo "  ✅ OGX is running"
 echo "  ✅ Math toolgroup is registered"
 echo "  ✅ Math MCP Server is operational"
 echo ""
 echo "Note: Direct LLM agent integration requires the agents API,"
-echo "which may be in a future version of Llama Stack."
+echo "which may be in a future version of OGX."
 echo ""
 echo "For now, the math tools are available via:"
 echo "  - Direct HTTP API: POST $MATH_MCP_URL/calculate"
-echo "  - Registered in Llama Stack as toolgroup: math-tools"
+echo "  - Registered in OGX as toolgroup: math-tools"
 echo "========================================"

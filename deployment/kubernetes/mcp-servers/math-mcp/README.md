@@ -1,6 +1,6 @@
 # Math MCP Server for Kubernetes
 
-A FastAPI-based HTTP server that provides mathematical operations with MCP-compatible endpoints for integration with Llama Stack.
+A FastAPI-based HTTP server that provides mathematical operations with MCP-compatible endpoints for integration with OGX.
 
 ## Architecture
 
@@ -12,7 +12,7 @@ A FastAPI-based HTTP server that provides mathematical operations with MCP-compa
            │ kubectl / curl
            ▼
 ┌─────────────────────┐         ┌──────────────────┐
-│   Llama Stack       │────────▶│   vLLM Server    │
+│   OGX              │────────▶│   vLLM Server    │
 │   (port 8321)       │  Calls  │   (port 8000)    │
 └──────────┬──────────┘  Model  └──────────────────┘
            │
@@ -38,14 +38,14 @@ A FastAPI-based HTTP server that provides mathematical operations with MCP-compa
 
 ## Overview
 
-This server demonstrates how to build and deploy LLM tool extensions as Kubernetes microservices. It provides 8 mathematical operations through a REST API and integrates with Llama Stack as a registered toolgroup.
+This server demonstrates how to build and deploy LLM tool extensions as Kubernetes microservices. It provides 8 mathematical operations through a REST API and integrates with OGX as a registered toolgroup.
 
 ### Features
 
 - **8 Math Operations**: add, subtract, multiply, divide, power, sqrt, abs, factorial
 - **HTTP API**: FastAPI server with health checks and MCP-compatible endpoints
 - **Kubernetes Native**: Deployment with resource limits and service discovery
-- **Llama Stack Integration**: Registered as toolgroup "math-tools"
+- **OGX Integration**: Registered as toolgroup "math-tools"
 - **Production Ready**: Error handling, validation, and comprehensive testing
 
 ## Prerequisites
@@ -53,7 +53,7 @@ This server demonstrates how to build and deploy LLM tool extensions as Kubernet
 - Kubernetes cluster (Kind, minikube, or cloud provider)
 - Docker installed
 - kubectl configured
-- Llama Stack deployed (see parent README.md)
+- OGX deployed (see parent README.md)
 
 ## Quick Start
 
@@ -67,7 +67,7 @@ cd kubernetes/mcp-servers/math-mcp
 docker build -t math-mcp-server:latest .
 
 # Load into Kind cluster (if using Kind)
-kind load docker-image math-mcp-server:latest --name llama-stack-test
+kind load docker-image math-mcp-server:latest --name ogx-test
 
 # Deploy to Kubernetes
 kubectl apply -f 00-math-mcp-deploy.yaml
@@ -78,20 +78,20 @@ kubectl get pods -l app=math-mcp-server
 kubectl logs -l app=math-mcp-server
 ```
 
-### 2. Register with Llama Stack
+### 2. Register with OGX
 
 ```bash
-# Ensure Llama Stack is accessible
-kubectl port-forward svc/llamastack-vllm 8321:8321
+# Ensure OGX is accessible
+kubectl port-forward svc/ogx-vllm 8321:8321
 
 # Register the math toolgroup
-llama-stack-client --endpoint http://localhost:8321 toolgroups register \
+ogx-client --endpoint http://localhost:8321 toolgroups register \
   math-tools \
   --provider-id model-context-protocol \
   --mcp-endpoint http://math-mcp-server.default.svc.cluster.local:8080
 
 # Verify registration
-llama-stack-client --endpoint http://localhost:8321 toolgroups list
+ogx-client --endpoint http://localhost:8321 toolgroups list
 ```
 
 Expected output:
@@ -111,7 +111,7 @@ The Python demo shows how to use both direct tool invocation and natural languag
 
 ```bash
 # Install dependencies
-pip install llama-stack-client fire termcolor
+pip install ogx-client fire termcolor
 
 # Run all tests (direct + natural language)
 python demo_math_mcp.py all
@@ -154,7 +154,7 @@ Or with a custom natural language query:
 ```
 
 This script will:
-- ✅ Verify Llama Stack is accessible
+- ✅ Verify OGX is accessible
 - ✅ List all registered toolgroups
 - ✅ Show math-tools toolgroup details
 - ✅ Test Math MCP Server connectivity
@@ -164,10 +164,10 @@ This script will:
 Expected output:
 ```
 ========================================
-Math MCP Server + Llama Stack Integration Test
+Math MCP Server + OGX Integration Test
 ========================================
 
-1. Verify Llama Stack is accessible:
+1. Verify OGX is accessible:
 "sentence-transformers/nomic-ai/nomic-embed-text-v1.5"
 
 2. List registered toolgroups:
@@ -198,7 +198,7 @@ MCP Server Result: 36504.0
 ✅ Natural language query successfully routed through MCP server!
 
 Summary:
-  ✅ Llama Stack is running
+  ✅ OGX is running
   ✅ Math toolgroup is registered
   ✅ Math MCP Server is operational
 ```
@@ -358,7 +358,7 @@ curl -X POST http://localhost:8080/calculate \
 docker build -t math-mcp-server:latest .
 
 # Reload into Kind
-kind load docker-image math-mcp-server:latest --name llama-stack-test
+kind load docker-image math-mcp-server:latest --name ogx-test
 
 # Restart deployment
 kubectl rollout restart deployment/math-mcp-server
@@ -400,14 +400,14 @@ kubectl run curl-test --rm -i --restart=Never --image=curlimages/curl -- \
 ### Toolgroup Registration Issues
 
 ```bash
-# Verify Llama Stack is accessible
+# Verify OGX is accessible
 curl http://localhost:8321/v1/models
 
 # Check registered toolgroups
 curl http://localhost:8321/v1/toolgroups | jq .
 
 # Re-register if needed
-llama-stack-client --endpoint http://localhost:8321 toolgroups register \
+ogx-client --endpoint http://localhost:8321 toolgroups register \
   math-tools \
   --provider-id model-context-protocol \
   --mcp-endpoint http://math-mcp-server.default.svc.cluster.local:8080
@@ -490,7 +490,7 @@ docker rmi math-mcp-server:latest
 
 ## Related Documentation
 
-- [Main Kubernetes Deployment Guide](../../README.md) - Llama Stack and vLLM setup
-- [Llama Stack Documentation](https://llamastack.io)
+- [Main Kubernetes Deployment Guide](../../README.md) - OGX and vLLM setup
+- [OGX Documentation](https://ogx-ai.github.io/)
 - [FastAPI Documentation](https://fastapi.tiangolo.com)
 - [Model Context Protocol](https://modelcontextprotocol.io)
