@@ -21,9 +21,8 @@ Learning Objectives:
 from __future__ import annotations
 
 import fire
-from termcolor import colored
-
 from ogx_client import OgxClient
+from termcolor import colored
 
 try:
     from dotenv import load_dotenv
@@ -84,7 +83,7 @@ def main(
         print(f"\nTools available via tool_runtime ({len(tools)}):")
         for tool in tools:
             print(f"  - {tool.name}: {tool.description or 'No description'}")
-            if hasattr(tool, 'parameters') and tool.parameters:
+            if hasattr(tool, "parameters") and tool.parameters:
                 print(f"    Parameters: {tool.parameters}")
     except Exception as exc:
         print(colored(f"Failed to list tools via tool_runtime: {exc}", "yellow"))
@@ -116,7 +115,7 @@ def main(
                         tool_name=tool.name,
                         kwargs=test_kwargs,
                     )
-                    print(colored(f"  ✓ Success! Result:", "green"))
+                    print(colored("  ✓ Success! Result:", "green"))
                     # Pretty print result (truncate if too long)
                     result_str = str(result)
                     if len(result_str) > 500:
@@ -129,37 +128,25 @@ def main(
                     print(colored(f"  ✗ Failed to invoke {tool.name}: {exc}", "yellow"))
 
         if not tool_invoked:
-            print(colored(
-                "\nNo invokable tools found or all invocations failed.",
-                "yellow"
-            ))
-            print(colored(
-                "To see tool invocation in action, you can:",
-                "yellow"
-            ))
-            print(colored(
-                "  1. Configure your OGX server with built-in tools (e.g., code_interpreter, web_search)",
-                "yellow"
-            ))
-            print(colored(
-                "  2. Or see demo 08_mcp_tools.py for MCP-based tool registration and invocation",
-                "yellow"
-            ))
+            print(colored("\nNo invokable tools found or all invocations failed.", "yellow"))
+            print(colored("To see tool invocation in action, you can:", "yellow"))
+            print(
+                colored(
+                    "  1. Configure your OGX server with built-in tools (e.g., code_interpreter, web_search)", "yellow"
+                )
+            )
+            print(colored("  2. Or see demo 08_mcp_tools.py for MCP-based tool registration and invocation", "yellow"))
     else:
         print(colored("No tools available to invoke.", "yellow"))
-        print(colored(
-            "\nNote: This demo shows the tool runtime API structure.",
-            "yellow"
-        ))
-        print(colored(
-            "For a working example with actual tool invocation, see demo 08_mcp_tools.py",
-            "yellow"
-        ))
+        print(colored("\nNote: This demo shows the tool runtime API structure.", "yellow"))
+        print(colored("For a working example with actual tool invocation, see demo 08_mcp_tools.py", "yellow"))
 
     print(colored("\n=== Step 5: Register a Toolgroup (Example) ===", "green"))
     print("To register a toolgroup, you typically need a provider.")
     print("Example with inline provider:")
-    print(colored("""
+    print(
+        colored(
+            """
     # For built-in tools (requires appropriate provider):
     client.toolgroups.register(
         toolgroup_id="my-custom-tools",
@@ -170,7 +157,10 @@ def main(
     # For more advanced examples, see:
     # - demo 08_mcp_tools.py for MCP-based registration
     # - Your OGX server configuration for available providers
-    """, "cyan"))
+    """,
+            "cyan",
+        )
+    )
 
     print(colored("\n=== Summary ===", "green"))
     print("Key APIs demonstrated:")

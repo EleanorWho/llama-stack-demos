@@ -32,11 +32,11 @@ from termcolor import colored
 
 from demos.shared.utils import (
     build_context,
-    download_documents,
     check_model_is_available,
+    download_documents,
     get_any_available_chat_model,
-    resolve_embedding_model,
     get_embedding_dimension,
+    resolve_embedding_model,
 )
 
 
@@ -126,8 +126,7 @@ def main(
                     else:
                         print(
                             colored(
-                                f"Failed to attach {doc_path.name}"
-                                + (f": {error_message}" if error_message else ""),
+                                f"Failed to attach {doc_path.name}" + (f": {error_message}" if error_message else ""),
                                 "red",
                             )
                         )

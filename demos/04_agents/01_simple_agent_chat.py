@@ -26,7 +26,7 @@ try:
     from dotenv import load_dotenv
 except Exception:
     load_dotenv = None
-from ogx_client import OgxClient, Agent, AgentEventLogger
+from ogx_client import Agent, AgentEventLogger, OgxClient
 from termcolor import colored
 
 from demos.shared.utils import check_model_is_available, get_any_available_chat_model

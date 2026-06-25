@@ -7,7 +7,6 @@ import json
 
 import pandas as pd
 import yfinance as yf
-
 from ogx_client.lib.agents.client_tool import client_tool
 
 

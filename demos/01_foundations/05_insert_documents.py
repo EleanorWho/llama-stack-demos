@@ -30,8 +30,8 @@ from termcolor import colored
 
 from demos.shared.utils import (
     download_documents,
-    resolve_embedding_model,
     get_embedding_dimension,
+    resolve_embedding_model,
 )
 
 try:
@@ -55,9 +55,7 @@ def _maybe_load_dotenv() -> None:
 
 
 def _get_vector_provider(client: OgxClient, provider_id: str | None):
-    vector_providers = [
-        provider for provider in client.providers.list() if provider.api == "vector_io"
-    ]
+    vector_providers = [provider for provider in client.providers.list() if provider.api == "vector_io"]
     if not vector_providers:
         print(colored("No available vector_io providers. Exiting.", "red"))
         return None

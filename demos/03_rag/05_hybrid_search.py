@@ -19,8 +19,8 @@ Learning Objectives:
 
 from __future__ import annotations
 
-from io import BytesIO
 import os
+from io import BytesIO
 from uuid import uuid4
 
 import fire
@@ -32,8 +32,8 @@ from demos.shared.utils import (
     can_model_chat,
     check_model_is_available,
     get_any_available_chat_model,
-    resolve_embedding_model,
     get_embedding_dimension,
+    resolve_embedding_model,
 )
 
 try:
@@ -282,15 +282,12 @@ def main(
         final_response = client.responses.create(
             model=resolved_model,
             instructions=(
-                "Answer the question using the local context and web sources. "
-                "If a source is missing, say so briefly."
+                "Answer the question using the local context and web sources. If a source is missing, say so briefly."
             ),
             input=[
                 {
                     "role": "user",
-                    "content": (
-                        f"{local_context}\n\nWeb sources:\n{web_context}\n\nQuestion: {question}"
-                    ),
+                    "content": (f"{local_context}\n\nWeb sources:\n{web_context}\n\nQuestion: {question}"),
                 }
             ],
             stream=False,

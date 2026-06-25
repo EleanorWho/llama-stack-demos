@@ -22,14 +22,12 @@ Learning Objectives:
 from __future__ import annotations
 
 import os
-import sys
 
 import fire
 from openai import OpenAI
 from termcolor import colored
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-from shared.utils import resolve_openai_model
+from demos.shared.utils import resolve_openai_model
 
 try:
     from dotenv import load_dotenv
@@ -75,7 +73,7 @@ def main(
             input=prompt,
             temperature=0.0,
         )
-        print(f"  Run {i+1}: {response.output_text}")
+        print(f"  Run {i + 1}: {response.output_text}")
 
     # --- Example 2: Medium temperature ---
     print(colored("\n--- temperature=0.7 (balanced) ---", "cyan"))
@@ -85,7 +83,7 @@ def main(
             input=prompt,
             temperature=0.7,
         )
-        print(f"  Run {i+1}: {response.output_text}")
+        print(f"  Run {i + 1}: {response.output_text}")
 
     # --- Example 3: High temperature (creative) ---
     print(colored("\n--- temperature=1.5 (creative) ---", "cyan"))
@@ -95,7 +93,7 @@ def main(
             input=prompt,
             temperature=1.5,
         )
-        print(f"  Run {i+1}: {response.output_text}")
+        print(f"  Run {i + 1}: {response.output_text}")
 
 
 if __name__ == "__main__":

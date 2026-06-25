@@ -21,14 +21,12 @@ Learning Objectives:
 from __future__ import annotations
 
 import os
-import sys
 
 import fire
 from openai import OpenAI
 from termcolor import colored
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-from shared.utils import resolve_openai_model
+from demos.shared.utils import resolve_openai_model
 
 try:
     from dotenv import load_dotenv
@@ -81,8 +79,7 @@ def main(
                 if hasattr(content_part, "logprobs") and content_part.logprobs:
                     print(colored("\nToken logprobs (first 5 positions):", "cyan"))
                     for i, token_logprob in enumerate(content_part.logprobs[:5]):
-                        print(f"  Position {i}: token='{token_logprob.token}' "
-                              f"logprob={token_logprob.logprob:.4f}")
+                        print(f"  Position {i}: token='{token_logprob.token}' logprob={token_logprob.logprob:.4f}")
                         if hasattr(token_logprob, "top_logprobs") and token_logprob.top_logprobs:
                             for alt in token_logprob.top_logprobs:
                                 print(f"    alt: '{alt.token}' logprob={alt.logprob:.4f}")

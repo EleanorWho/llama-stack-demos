@@ -52,19 +52,11 @@ def main(host: str, port: int, model_id: str | None = None):
     )
 
     if model_id is None:
-        print(
-            colored(
-                "No model id provided. Specify a model that supports vision.", "red"
-            )
-        )
+        print(colored("No model id provided. Specify a model that supports vision.", "red"))
         return
     else:
         if not check_model_is_available(client, model_id):
-            print(
-                colored(
-                    "Model not available. Specify a model that supports vision.", "red"
-                )
-            )
+            print(colored("Model not available. Specify a model that supports vision.", "red"))
             return
 
     agent = Agent(

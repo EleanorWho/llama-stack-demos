@@ -18,20 +18,19 @@ Learning Objectives:
 """
 
 import os
+
 import fire
 
 try:
     from dotenv import load_dotenv
 except Exception:
     load_dotenv = None
+from ogx_client import Agent, AgentEventLogger, OgxClient
 from termcolor import colored
 
+from demos.client_tools.calculator import calculator
 from demos.client_tools.ticker_data import get_ticker_data
 from demos.client_tools.web_search import WebSearchTool
-from demos.client_tools.calculator import calculator
-
-from ogx_client import OgxClient, Agent, AgentEventLogger
-
 from demos.shared.utils import can_model_chat, check_model_is_available, get_any_available_chat_model
 
 

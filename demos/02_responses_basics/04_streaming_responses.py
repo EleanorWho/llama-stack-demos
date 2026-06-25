@@ -67,9 +67,7 @@ def main(
     host: str,
     port: int,
     model_id: str | None = None,
-    instructions: str = (
-        "You are a helpful assistant. Answer directly and avoid refusing unless safety requires it."
-    ),
+    instructions: str = ("You are a helpful assistant. Answer directly and avoid refusing unless safety requires it."),
 ) -> None:
     _maybe_load_dotenv()
 
@@ -93,8 +91,7 @@ def main(
     print(f"Created conversation={conversation_id}")
 
     prompts = [
-        "We are discussing OGX, a framework and server for running AI models and tools. "
-        "In one sentence, describe it.",
+        "We are discussing OGX, a framework and server for running AI models and tools. In one sentence, describe it.",
         "Summarize the description in three short bullet points.",
         "Give one concrete use case in a single sentence.",
     ]

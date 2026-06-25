@@ -22,14 +22,12 @@ from __future__ import annotations
 
 import json
 import os
-import sys
 
 import fire
 from openai import OpenAI
 from termcolor import colored
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-from shared.utils import resolve_openai_model
+from demos.shared.utils import resolve_openai_model
 
 try:
     from dotenv import load_dotenv
@@ -98,11 +96,13 @@ def _handle_tool_calls(response) -> list[dict]:
             else:
                 result = fn(**fn_args)
             print(colored(f"  Tool result: {result}", "yellow"))
-            results.append({
-                "type": "function_call_output",
-                "call_id": item.call_id,
-                "output": result,
-            })
+            results.append(
+                {
+                    "type": "function_call_output",
+                    "call_id": item.call_id,
+                    "output": result,
+                }
+            )
     return results
 
 
@@ -150,7 +150,11 @@ def main(
             model=resolved_model,
             input=[
                 {"role": "user", "content": prompt},
-                *[{"type": "function_call", "name": item.name, "call_id": item.call_id, "arguments": item.arguments} for item in response.output if item.type == "function_call"],
+                *[
+                    {"type": "function_call", "name": item.name, "call_id": item.call_id, "arguments": item.arguments}
+                    for item in response.output
+                    if item.type == "function_call"
+                ],
                 *tool_results,
             ],
             tools=TOOLS,
@@ -176,7 +180,11 @@ def main(
             model=resolved_model,
             input=[
                 {"role": "user", "content": prompt},
-                *[{"type": "function_call", "name": item.name, "call_id": item.call_id, "arguments": item.arguments} for item in response.output if item.type == "function_call"],
+                *[
+                    {"type": "function_call", "name": item.name, "call_id": item.call_id, "arguments": item.arguments}
+                    for item in response.output
+                    if item.type == "function_call"
+                ],
                 *tool_results,
             ],
             tools=TOOLS,

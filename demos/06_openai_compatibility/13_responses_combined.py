@@ -22,14 +22,12 @@ Learning Objectives:
 from __future__ import annotations
 
 import os
-import sys
 
 import fire
 from openai import OpenAI
 from termcolor import colored
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-from shared.utils import resolve_openai_model
+from demos.shared.utils import resolve_openai_model
 
 try:
     from dotenv import load_dotenv
@@ -80,8 +78,7 @@ def main(
     print(f"Output: {response.output_text}")
     print(f"Status: {response.status}")
     if hasattr(response, "usage") and response.usage:
-        print(colored(f"Usage - Input: {response.usage.input_tokens}, "
-                      f"Output: {response.usage.output_tokens}", "green"))
+        print(colored(f"Usage - Input: {response.usage.input_tokens}, Output: {response.usage.output_tokens}", "green"))
 
     # --- Example 2: Precise factual response ---
     print(colored("\n--- Factual Q&A with combined params ---", "cyan"))
