@@ -28,6 +28,31 @@ REQUIRED_DOCSTRING_FIELDS = ["Demo:", "Description:", "Learning Objectives:"]
 
 SKIP_FILES = {"_template.py"}
 
+DEMO_REQUIRES_PATTERN = re.compile(r"^# demo-requires:\s*(\S+)\s*$")
+VALID_REQUIRES_VALUE = re.compile(r"^[A-Z][A-Z0-9_]*$|^[a-z][a-z0-9_]*$")
+
+
+def parse_demo_requires(path: Path) -> list[str]:
+    """Parse # demo-requires: tags from the top of a demo file.
+
+    Reads lines until the first non-comment, non-blank line (typically the
+    docstring).  Returns a list of requirement strings.
+    """
+    requires = []
+    try:
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                stripped = line.strip()
+                if not stripped or stripped.startswith("#"):
+                    m = DEMO_REQUIRES_PATTERN.match(stripped)
+                    if m:
+                        requires.append(m.group(1))
+                    continue
+                break
+    except OSError:
+        pass
+    return requires
+
 
 def find_demo_files() -> list[Path]:
     """Find all demo Python files matching NN_name.py in phase directories."""
@@ -113,7 +138,15 @@ def validate_file(path: Path) -> tuple[list[str], list[str]]:
             if "port" not in param_names:
                 errors.append(f"{relative}: main() missing 'port' parameter")
 
-    # 5. Warn on sys.path manipulation (non-blocking)
+    # 5. Validate demo-requires tags
+    for req in parse_demo_requires(path):
+        if not VALID_REQUIRES_VALUE.match(req):
+            errors.append(
+                f"{relative}: invalid demo-requires value '{req}' — "
+                "use UPPER_CASE for env vars or lower_case for capabilities"
+            )
+
+    # 6. Warn on sys.path manipulation (non-blocking)
     for node in ast.walk(tree):
         if (
             isinstance(node, ast.Call)

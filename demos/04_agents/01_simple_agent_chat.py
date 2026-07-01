@@ -1,3 +1,4 @@
+# demo-requires: TAVILY_SEARCH_API_KEY
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 # All rights reserved.
 #

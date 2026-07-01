@@ -1,3 +1,4 @@
+# demo-requires: vision_model
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 # All rights reserved.
 #

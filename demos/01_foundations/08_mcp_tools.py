@@ -1,3 +1,4 @@
+# demo-requires: mcp_server
 """
 Demo: MCP Tools
 
