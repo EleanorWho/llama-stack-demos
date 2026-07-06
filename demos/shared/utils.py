@@ -66,7 +66,7 @@ def resolve_openai_model(client, model_id: str | None) -> str | None:
 
     Works with any OpenAI-compatible client that exposes ``client.models.list()``.
     """
-    resolved = model_id or os.getenv("OGX_CHAT_MODEL") or os.getenv("OGX_MODEL") or None
+    resolved = model_id or os.getenv("OGX_CHAT_MODEL") or None
     if resolved:
         return resolved
     models = _list_models(client)
@@ -104,35 +104,6 @@ def can_model_chat(client: OgxClient, model_id: str) -> bool:
     except Exception:
         return False
     return True
-
-
-def get_any_available_model(client: OgxClient):
-    resolved = os.getenv("OGX_CHAT_MODEL") or None
-    if resolved:
-        return resolved
-    candidates = [_get_model_id(m) for m in _list_models(client) if _is_llm_model(m) and _get_model_id(m)]
-    if not candidates:
-        print(colored("No available models.", "red"))
-        return None
-    return candidates[0]
-
-
-def get_any_available_chat_model(client: OgxClient):
-    resolved = os.getenv("OGX_CHAT_MODEL") or None
-    if resolved:
-        return resolved
-
-    candidates = [_get_model_id(m) for m in _list_models(client) if _is_llm_model(m) and _get_model_id(m)]
-    if not candidates:
-        print(colored("No available models.", "red"))
-        return None
-
-    for mid in candidates:
-        if can_model_chat(client, mid):
-            return mid
-
-    print(colored("No available chat-capable models.", "red"))
-    return None
 
 
 def resolve_embedding_model(client: OgxClient, model_id: str | None = None) -> str | None:

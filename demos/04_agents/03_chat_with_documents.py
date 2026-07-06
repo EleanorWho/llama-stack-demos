@@ -34,9 +34,9 @@ from demos.shared.utils import (
     build_context,
     check_model_is_available,
     download_documents,
-    get_any_available_chat_model,
     get_embedding_dimension,
     resolve_embedding_model,
+    resolve_model,
 )
 
 
@@ -61,7 +61,7 @@ def main(
     )
 
     if model_id is None:
-        model_id = get_any_available_chat_model(client)
+        model_id = resolve_model(client, None)
         if model_id is None:
             return
     else:

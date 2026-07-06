@@ -32,7 +32,7 @@ from termcolor import colored
 from demos.client_tools.calculator import calculator
 from demos.client_tools.ticker_data import get_ticker_data
 from demos.client_tools.web_search import WebSearchTool
-from demos.shared.utils import can_model_chat, check_model_is_available, get_any_available_chat_model
+from demos.shared.utils import can_model_chat, check_model_is_available, resolve_model
 
 
 def _resolve_web_tool():
@@ -94,7 +94,7 @@ def main(host: str, port: int, model_id: str | None = None):
     client = OgxClient(base_url=f"http://{host}:{port}")
 
     if model_id is None:
-        model_id = get_any_available_chat_model(client)
+        model_id = resolve_model(client, None)
         if model_id is None:
             return
     else:

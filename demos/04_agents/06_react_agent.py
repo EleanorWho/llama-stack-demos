@@ -31,7 +31,7 @@ from ogx_client import AgentEventLogger, OgxClient
 from ogx_client.lib.agents.react.agent import ReActAgent
 from termcolor import colored
 
-from demos.shared.utils import can_model_chat, check_model_is_available, get_any_available_chat_model
+from demos.shared.utils import can_model_chat, check_model_is_available, resolve_model
 
 
 def torchtune(query: str = "torchtune"):  # noqa: ARG001
@@ -77,7 +77,7 @@ def main(host: str, port: int, model_id: str | None = None):
     )
 
     if model_id is None:
-        model_id = get_any_available_chat_model(client)
+        model_id = resolve_model(client, None)
         if model_id is None:
             return
     else:
