@@ -6,10 +6,10 @@ Runs both in pre-commit (on changed files) and in CI (on all demo files).
 
 Usage:
     # Validate specific files (pre-commit passes changed files)
-    python scripts/validate_demos.py demos/01_foundations/01_client_setup.py
+    uv run python scripts/validate_demos.py demos/01_foundations/01_client_setup.py
 
     # Validate all demo files
-    python scripts/validate_demos.py
+    uv run python scripts/validate_demos.py
 """
 
 from __future__ import annotations

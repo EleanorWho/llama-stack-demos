@@ -38,7 +38,7 @@ This folder teaches the fundamental building blocks of OGX, including client set
 
 **Run**:
 ```bash
-python -m demos.01_foundations.01_client_setup localhost 8321
+uv run python -m demos.01_foundations.01_client_setup localhost 8321
 ```
 
 ### Demo 2: Chat Completion
@@ -51,10 +51,10 @@ python -m demos.01_foundations.01_client_setup localhost 8321
 **Run**:
 ```bash
 # Basic chat completion
-python -m demos.01_foundations.02_chat_completion localhost 8321 --prompt "Hello"
+uv run python -m demos.01_foundations.02_chat_completion localhost 8321 --prompt "Hello"
 
 # Stream tokens as they arrive
-python -m demos.01_foundations.02_chat_completion localhost 8321 --prompt "Hello" --stream
+uv run python -m demos.01_foundations.02_chat_completion localhost 8321 --prompt "Hello" --stream
 ```
 
 ### Demo 3: System Prompts
@@ -67,10 +67,10 @@ python -m demos.01_foundations.02_chat_completion localhost 8321 --prompt "Hello
 **Run**:
 ```bash
 # Use default system prompt
-python -m demos.01_foundations.03_system_prompts localhost 8321 --prompt "Hello"
+uv run python -m demos.01_foundations.03_system_prompts localhost 8321 --prompt "Hello"
 
 # Override with custom system prompt
-python -m demos.01_foundations.03_system_prompts localhost 8321 --system_prompt "You are concise." --prompt "Hello"
+uv run python -m demos.01_foundations.03_system_prompts localhost 8321 --system_prompt "You are concise." --prompt "Hello"
 ```
 
 ### Demo 4: Vector DB Basics
@@ -83,10 +83,10 @@ python -m demos.01_foundations.03_system_prompts localhost 8321 --system_prompt 
 **Run**:
 ```bash
 # Use default text and query
-python -m demos.01_foundations.04_vector_db_basics localhost 8321
+uv run python -m demos.01_foundations.04_vector_db_basics localhost 8321
 
 # Provide custom text and query
-python -m demos.01_foundations.04_vector_db_basics localhost 8321 --text "OGX unifies AI services." --query "What does OGX do?"
+uv run python -m demos.01_foundations.04_vector_db_basics localhost 8321 --text "OGX unifies AI services." --query "What does OGX do?"
 ```
 
 ### Demo 5: Insert Documents
@@ -99,13 +99,13 @@ python -m demos.01_foundations.04_vector_db_basics localhost 8321 --text "OGX un
 **Run**:
 ```bash
 # Insert documents from URLs
-python -m demos.01_foundations.05_insert_documents localhost 8321
+uv run python -m demos.01_foundations.05_insert_documents localhost 8321
 
 # Insert files from a local directory
-python -m demos.01_foundations.05_insert_documents localhost 8321 --file_dir ./docs
+uv run python -m demos.01_foundations.05_insert_documents localhost 8321 --file_dir ./docs
 
 # Insert into an existing vector store
-python -m demos.01_foundations.05_insert_documents localhost 8321 --vector_store_id <vector-store-id>
+uv run python -m demos.01_foundations.05_insert_documents localhost 8321 --vector_store_id <vector-store-id>
 ```
 
 ### Demo 6: Search Vectors
@@ -117,7 +117,7 @@ python -m demos.01_foundations.05_insert_documents localhost 8321 --vector_store
 
 **Run**:
 ```bash
-python -m demos.01_foundations.06_search_vectors localhost 8321 --query "What does OGX do?"
+uv run python -m demos.01_foundations.06_search_vectors localhost 8321 --query "What does OGX do?"
 ```
 
 ### Demo 7: Tool Runtime API
@@ -129,7 +129,7 @@ python -m demos.01_foundations.06_search_vectors localhost 8321 --query "What do
 
 **Run**:
 ```bash
-python -m demos.01_foundations.07_tool_registration localhost 8321
+uv run python -m demos.01_foundations.07_tool_registration localhost 8321
 ```
 
 ### Demo 8: MCP Tools
@@ -142,7 +142,7 @@ python -m demos.01_foundations.07_tool_registration localhost 8321
 **Run**:
 ```bash
 # Terminal 1: start the MCP server (requires: pip install mcp)
-python -m demos.01_foundations.08_mcp_tools serve
+uv run python -m demos.01_foundations.08_mcp_tools serve
 
 # Terminal 2: register the MCP toolgroup with OGX (Optional)
 ogx-client toolgroups register plus-tools \
@@ -150,5 +150,5 @@ ogx-client toolgroups register plus-tools \
   --mcp-endpoint "http://localhost:8000/sse"
 
 # Terminal 2: invoke the add tool through the runtime
-python -m demos.01_foundations.08_mcp_tools run localhost 8321 --mcp_endpoint http://localhost:8000/sse --tool_name add --a 1 --b 1
+uv run python -m demos.01_foundations.08_mcp_tools run localhost 8321 --mcp_endpoint http://localhost:8000/sse --tool_name add --a 1 --b 1
 ```

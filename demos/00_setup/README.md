@@ -48,7 +48,7 @@ Scanning for available providers...
 ## Verify Your Setup
 
 ```bash
-python -m demos.00_setup.01_list_providers localhost 8321
+uv run python -m demos.00_setup.01_list_providers localhost 8321
 ```
 
 This lists all configured providers and available models.
