@@ -30,9 +30,9 @@ from termcolor import colored
 from demos.shared.utils import (
     can_model_chat,
     check_model_is_available,
-    get_any_available_chat_model,
     get_embedding_dimension,
     resolve_embedding_model,
+    resolve_model,
 )
 
 try:
@@ -75,9 +75,9 @@ def main(
 
     client = OgxClient(base_url=f"http://{host}:{port}")
     # Select a chat-capable model for the RAG response.
-    resolved_model = model_id or os.getenv("OGX_MODEL") or None
+    resolved_model = model_id or os.getenv("OGX_CHAT_MODEL") or None
     if resolved_model is None:
-        resolved_model = get_any_available_chat_model(client)
+        resolved_model = resolve_model(client, None)
         if resolved_model is None:
             return
     else:

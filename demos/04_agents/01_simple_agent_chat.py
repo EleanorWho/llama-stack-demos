@@ -1,3 +1,4 @@
+# demo-requires: TAVILY_SEARCH_API_KEY
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 # All rights reserved.
 #
@@ -29,7 +30,7 @@ except Exception:
 from ogx_client import Agent, AgentEventLogger, OgxClient
 from termcolor import colored
 
-from demos.shared.utils import check_model_is_available, get_any_available_chat_model
+from demos.shared.utils import check_model_is_available, resolve_model
 
 
 def main(host: str, port: int, model_id: str | None = None):
@@ -50,7 +51,7 @@ def main(host: str, port: int, model_id: str | None = None):
     )
 
     if model_id is None:
-        model_id = get_any_available_chat_model(client)
+        model_id = resolve_model(client, None)
         if model_id is None:
             return
     else:

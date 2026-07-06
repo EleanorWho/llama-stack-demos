@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# DEPRECATED: Use tests/run_demos.py instead, which auto-scans demos and reads
+# per-demo # demo-requires: tags to decide what to skip.
+#   python tests/run_demos.py localhost 8321
 set -uo pipefail
 trap 'echo -e "\n\nInterrupted."; exit 130' INT
 

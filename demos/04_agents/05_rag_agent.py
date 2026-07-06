@@ -36,9 +36,9 @@ from termcolor import colored
 from demos.shared.utils import (
     can_model_chat,
     check_model_is_available,
-    get_any_available_chat_model,
     get_embedding_dimension,
     resolve_embedding_model,
+    resolve_model,
 )
 
 
@@ -64,7 +64,7 @@ def main(
     client = OgxClient(base_url=f"http://{host}:{port}")
 
     if model_id is None:
-        model_id = get_any_available_chat_model(client)
+        model_id = resolve_model(client, None)
         if model_id is None:
             return
     else:

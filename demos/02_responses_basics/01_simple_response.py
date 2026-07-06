@@ -25,7 +25,7 @@ import fire
 from ogx_client import OgxClient
 from termcolor import colored
 
-from demos.shared.utils import can_model_chat, check_model_is_available, get_any_available_chat_model
+from demos.shared.utils import can_model_chat, check_model_is_available, resolve_model
 
 try:
     from dotenv import load_dotenv
@@ -48,9 +48,9 @@ def main(
     _maybe_load_dotenv()
 
     client = OgxClient(base_url=f"http://{host}:{port}")
-    resolved_model = model_id or os.getenv("OGX_MODEL") or None
+    resolved_model = model_id or os.getenv("OGX_CHAT_MODEL") or None
     if resolved_model is None:
-        resolved_model = get_any_available_chat_model(client)
+        resolved_model = resolve_model(client, None)
         if resolved_model is None:
             return
     else:
