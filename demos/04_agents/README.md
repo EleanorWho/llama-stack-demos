@@ -23,7 +23,7 @@ This folder teaches how to build conversational agents using the OGX Agent API. 
 
 **Run**:
 ```bash
-python -m demos.04_agents.01_simple_agent_chat --host localhost --port 8321
+uv run python -m demos.04_agents.01_simple_agent_chat --host localhost --port 8321
 ```
 
 ### Demo 2: Multimodal Chat
@@ -36,7 +36,7 @@ python -m demos.04_agents.01_simple_agent_chat --host localhost --port 8321
 **Run**:
 ```bash
 # Note: This demo requires a vision-capable model (e.g., ollama/llama3.2-vision:latest)
-python -m demos.04_agents.02_chat_multimodal --host localhost --port 8321 --model_id ollama/llama3.2-vision:latest
+uv run python -m demos.04_agents.02_chat_multimodal --host localhost --port 8321 --model_id ollama/llama3.2-vision:latest
 ```
 
 ### Demo 3: Chat with Documents
@@ -48,7 +48,7 @@ python -m demos.04_agents.02_chat_multimodal --host localhost --port 8321 --mode
 
 **Run**:
 ```bash
-python -m demos.04_agents.03_chat_with_documents --host localhost --port 8321
+uv run python -m demos.04_agents.03_chat_with_documents --host localhost --port 8321
 ```
 
 ### Demo 4: Agent with Tools
@@ -63,7 +63,7 @@ python -m demos.04_agents.03_chat_with_documents --host localhost --port 8321
 pip install -U yfinance
 ```
 ```bash
-python -m demos.04_agents.04_agent_with_tools --host localhost --port 8321
+uv run python -m demos.04_agents.04_agent_with_tools --host localhost --port 8321
 ```
 
 ### Demo 5: RAG Agent
@@ -75,7 +75,7 @@ python -m demos.04_agents.04_agent_with_tools --host localhost --port 8321
 
 **Run**:
 ```bash
-python -m demos.04_agents.05_rag_agent --host localhost --port 8321
+uv run python -m demos.04_agents.05_rag_agent --host localhost --port 8321
 ```
 
 ### Demo 6: ReACT Agent
@@ -87,7 +87,7 @@ python -m demos.04_agents.05_rag_agent --host localhost --port 8321
 
 **Run**:
 ```bash
-python -m demos.04_agents.06_react_agent --host localhost --port 8321
+uv run python -m demos.04_agents.06_react_agent --host localhost --port 8321
 ```
 
 ### Demo 7: Agent Routing
@@ -99,7 +99,7 @@ python -m demos.04_agents.06_react_agent --host localhost --port 8321
 
 **Run**:
 ```bash
-python -m demos.04_agents.07_agent_routing --host localhost --port 8321
+uv run python -m demos.04_agents.07_agent_routing --host localhost --port 8321
 ```
 
 ## Usage Tips

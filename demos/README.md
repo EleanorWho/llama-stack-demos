@@ -71,7 +71,7 @@ source .venv/bin/activate
 
 # 7️⃣ Test the connection
 #    - Run the client setup demo to verify server is running
-python -m demos.01_foundations.01_client_setup localhost 8321  # Note: port 8321 for local starter server
+uv run python -m demos.01_foundations.01_client_setup localhost 8321  # Note: port 8321 for local starter server
 ```
 
 ### Troubleshooting
@@ -92,7 +92,7 @@ kill <PID>
 
 **Check which providers and models are available:**
 ```bash
-python -m demos.00_setup.01_list_providers localhost 8321
+uv run python -m demos.00_setup.01_list_providers localhost 8321
 ```
 
 ## Available Demos

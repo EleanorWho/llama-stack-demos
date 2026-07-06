@@ -5,11 +5,11 @@ Auto-scans demo files, reads # demo-requires: tags to determine which demos
 to skip, and runs the rest with a timeout.
 
 Usage:
-    python tests/run_demos.py localhost 8321
-    python tests/run_demos.py localhost 8321 --timeout 180
-    python tests/run_demos.py localhost 8321 --capabilities vision_model,mcp_server
-    python tests/run_demos.py localhost 8321 --phase 04_agents
-    python tests/run_demos.py localhost 8321 --demo demos/03_rag/01_simple_rag.py
+    uv run python tests/run_demos.py localhost 8321
+    uv run python tests/run_demos.py localhost 8321 --timeout 180
+    uv run python tests/run_demos.py localhost 8321 --capabilities vision_model,mcp_server
+    uv run python tests/run_demos.py localhost 8321 --phase 04_agents
+    uv run python tests/run_demos.py localhost 8321 --demo demos/03_rag/01_simple_rag.py
 """
 
 from __future__ import annotations

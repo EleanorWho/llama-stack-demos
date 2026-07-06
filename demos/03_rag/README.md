@@ -21,7 +21,7 @@ This folder teaches Retrieval-Augmented Generation (RAG) techniques using OGX's 
 
 **Run**:
 ```bash
-python -m demos.03_rag.01_simple_rag localhost 8321
+uv run python -m demos.03_rag.01_simple_rag localhost 8321
 ```
 
 ### Demo 2: Multi-Source RAG
@@ -33,7 +33,7 @@ python -m demos.03_rag.01_simple_rag localhost 8321
 
 **Run**:
 ```bash
-python -m demos.03_rag.02_multi_source_rag localhost 8321
+uv run python -m demos.03_rag.02_multi_source_rag localhost 8321
 ```
 
 ### Demo 3: RAG with Metadata
@@ -45,7 +45,7 @@ python -m demos.03_rag.02_multi_source_rag localhost 8321
 
 **Run**:
 ```bash
-python -m demos.03_rag.03_rag_with_metadata localhost 8321 --source doc_a
+uv run python -m demos.03_rag.03_rag_with_metadata localhost 8321 --source doc_a
 ```
 
 ### Demo 4: Chunking Strategies
@@ -57,7 +57,7 @@ python -m demos.03_rag.03_rag_with_metadata localhost 8321 --source doc_a
 
 **Run**:
 ```bash
-python -m demos.03_rag.04_chunking_strategies localhost 8321
+uv run python -m demos.03_rag.04_chunking_strategies localhost 8321
 ```
 
 ### Demo 5: Hybrid Search
@@ -69,5 +69,5 @@ python -m demos.03_rag.04_chunking_strategies localhost 8321
 
 **Run**:
 ```bash
-python -m demos.03_rag.05_hybrid_search localhost 8321
+uv run python -m demos.03_rag.05_hybrid_search localhost 8321
 ```
