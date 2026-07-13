@@ -40,9 +40,10 @@ For demo structure, naming conventions, and documentation standards, see [DEMOS_
    """
    ```
 
-   - `UPPER_CASE` values are treated as environment variable names.
+   - `UPPER_CASE` values are treated as environment variable names. The test harness (`tests/run_demos.py`) checks whether these are set before running the demo.
    - `lower_case` values are capability tags (e.g., `vision_model`, `mcp_server`).
    - Demos without any `# demo-requires:` tags are assumed to have no special dependencies.
+   - If your demo requires a new environment variable that isn't in `.env.example`, add it there (commented out, with a description). Users can then uncomment and fill in their own keys in their local `.env` to enable the demo in the test harness.
 
 6. **Update the phase README** (`demos/<phase>/README.md`) with an entry for your demo, following the format of existing entries.
 
