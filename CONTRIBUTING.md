@@ -75,12 +75,6 @@ Before opening your PR, verify:
 - [ ] Phase `README.md` updated with new demo entry
 - [ ] `pre-commit run --all-files` passes
 
-## Branching and Pull Requests
-
-- **Branch naming**: `<username>/<short-description>` (e.g., `jdoe/add-streaming-rag-demo`)
-- **One demo per PR** preferred. Multiple related demos in one PR are acceptable.
-- PRs must pass CI checks before merge.
-
 ## Shared Utilities
 
 Common helper functions live in `demos/shared/utils.py`. Use them instead of duplicating logic across demos (e.g., `resolve_model`, `resolve_embedding_model`, `get_embedding_dimension`).
@@ -91,9 +85,9 @@ Common helper functions live in `demos/shared/utils.py`. Use them instead of dup
 
 Adding a new top-level phase directory (e.g., `demos/08_new_topic/`) is rare. If you believe one is needed:
 
-1. Open an issue to discuss the scope and placement.
-2. Create the directory with an `__init__.py` and a `README.md` following the format of existing phase READMEs.
-3. Update the root `README.md` and `DEMOS_STRUCTURE.md` to include the new phase.
+1. Create the directory with an `__init__.py` and a `README.md` following the format of existing phase READMEs.
+2. Update the root `README.md` and `DEMOS_STRUCTURE.md` to include the new phase.
+3. Explain the scope and placement in the PR description.
 
 ## Running Demos
 
