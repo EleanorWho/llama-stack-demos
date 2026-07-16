@@ -129,13 +129,6 @@ async def connect(req: ConnectRequest):
         if not vector_provider:
             raise ValueError("No vector_io provider found on the server.")
 
-        shield_id = None
-        try:
-            shields = client.shields.list()
-            shield_id = shields[0].identifier if shields else None
-        except (AttributeError, Exception):
-            pass
-
         orc = KnowledgeOrchestrator(
             client=client,
             model_id=model_id,
@@ -143,7 +136,6 @@ async def connect(req: ConnectRequest):
             embedding_dimension=embedding_dimension,
             provider_id=vector_provider.provider_id,
             namespace=os.getenv("KA_NAMESPACE", "ka"),
-            shield_id=shield_id,
         )
         orc.load_existing_knowledge_bases()
         return orc
@@ -159,7 +151,6 @@ async def connect(req: ConnectRequest):
     return {
         "model_id": _orchestrator.model_id,
         "embedding_model": _orchestrator.embedding_model,
-        "shield_id": _orchestrator.shield_id,
         "knowledge_bases": _kb_list(_orchestrator),
     }
 

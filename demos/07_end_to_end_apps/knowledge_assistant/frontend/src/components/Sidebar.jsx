@@ -140,7 +140,6 @@ export default function Sidebar({
     }
   }
 
-  const shieldId = serverInfo?.shield_id ?? null
   const availableModels = serverInfo?.available_models ?? []
 
   const handleModelChange = async (e) => {
@@ -155,11 +154,6 @@ export default function Sidebar({
     <div className="sidebar">
       <div className="sidebar-header">
         <h1>📚 Knowledge Assistant</h1>
-        {connected && (
-          <div className="connected-badge">
-            {shieldId && <span className="shield-badge" title={`Safety shield: ${shieldId}`}>🛡️</span>}
-          </div>
-        )}
         {connected && availableModels.length > 0 && (
           <select
             className="form-input"

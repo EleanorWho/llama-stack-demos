@@ -13,7 +13,6 @@ When multiple knowledge bases are selected, the app queries each one independent
 | **Files API** | Uploading and storing documents |
 | **Vector Stores API** | Creating per-KB vector stores, ingesting chunks, similarity search |
 | **Inference API** | Generating answers from retrieved context; synthesizing across KBs |
-| **Safety API** | Screening user questions through a shield before RAG; blocked requests never reach the model |
 | **Conversations API** | Maintaining per-KB session history so follow-up questions have context |
 
 **RAG pattern**: retrieval and generation are kept explicit and separate. For each query, the app calls `vector_stores.search()` to retrieve relevant chunks, then constructs a prompt with that context before calling the Inference API. This avoids relying on model-side tool calling, which is unreliable with smaller models.

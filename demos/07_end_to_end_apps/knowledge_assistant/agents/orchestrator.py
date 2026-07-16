@@ -27,7 +27,6 @@ class KnowledgeOrchestrator:
         embedding_dimension: int,
         provider_id: str,
         namespace: str = "ka",
-        shield_id: str | None = None,
     ) -> None:
         self.client = client
         self.model_id = model_id
@@ -35,7 +34,6 @@ class KnowledgeOrchestrator:
         self.embedding_dimension = embedding_dimension
         self.provider_id = provider_id
         self.namespace = namespace
-        self.shield_id = shield_id
         self.agents: dict[str, KnowledgeAgent] = {}
 
     def _store_name(self, kb_name: str) -> str:
@@ -124,10 +122,6 @@ class KnowledgeOrchestrator:
           - 'mode': 'single' or 'multi'
           - 'sources': list of per-KB results (each has 'kb_name' and 'answer')
         """
-        violation = self._check_safety(question)
-        if violation:
-            return {"answer": violation, "mode": "single", "sources": [], "blocked": True}
-
         active = [name for name in kb_names if name in self.agents]
         if not active:
             return {"answer": "No knowledge bases selected.", "mode": "single", "sources": []}
@@ -161,18 +155,3 @@ class KnowledgeOrchestrator:
             stream=False,
         )
         return response.output_text or ""
-
-    def _check_safety(self, text: str) -> str | None:
-        """Return a refusal message if the text violates the shield policy, else None."""
-        if not self.shield_id:
-            return None
-        try:
-            resp = self.client.safety.run_shield(
-                shield_id=self.shield_id,
-                messages=[{"role": "user", "content": text}],
-            )
-            if resp.violation:
-                return resp.violation.user_message or "I can't help with that request."
-        except Exception:
-            pass
-        return None
