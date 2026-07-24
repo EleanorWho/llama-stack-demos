@@ -23,6 +23,7 @@ import os
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from urllib.parse import urlparse
 
 # This app runs via uvicorn from its own directory, not via python -m from the
 # repo root, so we need the repo root on sys.path for demos.shared.utils.
@@ -30,6 +31,8 @@ _repo_root = Path(__file__).resolve().parents[3]
 if str(_repo_root) not in sys.path:
     sys.path.insert(0, str(_repo_root))
 
+import httpx  # noqa: E402
+import trafilatura  # noqa: E402
 from fastapi import FastAPI, File, HTTPException, UploadFile  # noqa: E402
 from fastapi.middleware.cors import CORSMiddleware  # noqa: E402
 from fastapi.responses import StreamingResponse  # noqa: E402
@@ -47,6 +50,9 @@ except Exception:
 from agents.orchestrator import KnowledgeOrchestrator  # noqa: E402
 
 from demos.shared.utils import (  # noqa: E402
+    _get_model_id,
+    _is_llm_model,
+    _list_models,
     get_embedding_dimension,
     resolve_embedding_model,
     resolve_model,
@@ -109,12 +115,18 @@ def _kb_list(orc: KnowledgeOrchestrator) -> list[dict]:
 async def connect(req: ConnectRequest):
     global _orchestrator
 
-    def _do_connect() -> KnowledgeOrchestrator:
+    def _do_connect() -> tuple[KnowledgeOrchestrator, list[str]]:
         client = OgxClient(base_url=f"http://{req.host}:{req.port}")
 
         model_id = resolve_model(client, req.model_id)
         if not model_id:
             raise ValueError("No chat-capable model found on the server.")
+
+        available_models = [
+            _get_model_id(m)
+            for m in _list_models(client)
+            if _is_llm_model(m) and _get_model_id(m) and "guard" not in (_get_model_id(m) or "")
+        ]
 
         embedding_model = resolve_embedding_model(client)
         if not embedding_model:
@@ -138,11 +150,11 @@ async def connect(req: ConnectRequest):
             namespace=os.getenv("KA_NAMESPACE", "ka"),
         )
         orc.load_existing_knowledge_bases()
-        return orc
+        return orc, available_models
 
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()
     try:
-        _orchestrator = await loop.run_in_executor(_executor, _do_connect)
+        _orchestrator, available_models = await loop.run_in_executor(_executor, _do_connect)
     except ValueError as e:
         raise HTTPException(status_code=422, detail=str(e)) from e
     except Exception as e:
@@ -152,6 +164,7 @@ async def connect(req: ConnectRequest):
         "model_id": _orchestrator.model_id,
         "embedding_model": _orchestrator.embedding_model,
         "knowledge_bases": _kb_list(_orchestrator),
+        "available_models": available_models,
     }
 
 
@@ -161,12 +174,12 @@ async def list_knowledge_bases():
     return _kb_list(orc)
 
 
-@app.delete("/api/knowledge-bases/{kb_name:path}")
+@app.delete("/api/knowledge-bases/{kb_name}")
 async def delete_knowledge_base(kb_name: str):
     orc = _require_orchestrator()
     if kb_name not in orc.agents:
         raise HTTPException(status_code=404, detail=f"Knowledge base '{kb_name}' not found.")
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()
     try:
         await loop.run_in_executor(_executor, lambda: orc.delete_knowledge_base(kb_name))
     except Exception as e:
@@ -179,7 +192,7 @@ async def list_kb_files(kb_name: str):
     orc = _require_orchestrator()
     if kb_name not in orc.agents:
         raise HTTPException(status_code=404, detail=f"Knowledge base '{kb_name}' not found.")
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()
     files = await loop.run_in_executor(_executor, lambda: orc.agents[kb_name].list_files())
     return files
 
@@ -192,8 +205,10 @@ async def create_knowledge_base(req: CreateKBRequest):
         raise HTTPException(status_code=422, detail="Knowledge base name cannot be empty.")
     if "/" in name:
         raise HTTPException(status_code=422, detail="Knowledge base name cannot contain '/'.")
+    if "::" in name:
+        raise HTTPException(status_code=422, detail="Knowledge base name cannot contain '::'.")
 
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()
     try:
         await loop.run_in_executor(_executor, lambda: orc.create_knowledge_base(req.name.strip()))
     except Exception as e:
@@ -208,7 +223,7 @@ async def upload_files(kb_name: str, files: list[UploadFile] = File(...)):  # no
     if kb_name not in orc.agents:
         raise HTTPException(status_code=404, detail=f"Knowledge base '{kb_name}' not found.")
 
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()
 
     async def _ingest(f: UploadFile) -> None:
         content = await f.read()
@@ -230,7 +245,7 @@ async def delete_file(kb_name: str, file_id: str):
     orc = _require_orchestrator()
     if kb_name not in orc.agents:
         raise HTTPException(status_code=404, detail=f"Knowledge base '{kb_name}' not found.")
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()
     try:
         await loop.run_in_executor(_executor, lambda: orc.delete_file(kb_name, file_id))
     except Exception as e:
@@ -244,8 +259,9 @@ async def add_url(kb_name: str, req: AddURLRequest):
     if kb_name not in orc.agents:
         raise HTTPException(status_code=404, detail=f"Knowledge base '{kb_name}' not found.")
 
-    import httpx
-    import trafilatura
+    parsed = urlparse(req.url)
+    if parsed.scheme not in ("http", "https"):
+        raise HTTPException(status_code=422, detail="Only http and https URLs are allowed.")
 
     try:
         async with httpx.AsyncClient(follow_redirects=True, timeout=30) as client:
@@ -259,15 +275,11 @@ async def add_url(kb_name: str, req: AddURLRequest):
     if not text:
         raise HTTPException(status_code=422, detail="Could not extract readable text from URL.")
 
-    # Use the URL's last path segment as the filename, fall back to domain
-    from urllib.parse import urlparse
-
-    parsed = urlparse(req.url)
     slug = parsed.path.rstrip("/").split("/")[-1] or parsed.netloc
     filename = f"{slug}.txt"
 
     content = text.encode("utf-8")
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()
     try:
         await loop.run_in_executor(_executor, lambda: orc.ingest_file(kb_name, filename, content))
     except Exception as e:
@@ -279,7 +291,7 @@ async def add_url(kb_name: str, req: AddURLRequest):
 @app.post("/api/chat")
 async def chat(req: ChatRequest):
     orc = _require_orchestrator()
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()
 
     async def event_stream():
         count = len(req.kb_names)

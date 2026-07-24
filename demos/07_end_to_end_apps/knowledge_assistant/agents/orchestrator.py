@@ -6,6 +6,9 @@
 
 from __future__ import annotations
 
+import contextlib
+from concurrent.futures import ThreadPoolExecutor
+
 from ogx_client import OgxClient
 
 from .knowledge_agent import KnowledgeAgent
@@ -96,8 +99,6 @@ class KnowledgeOrchestrator:
             raise KeyError(kb_name)
         agent = self.agents[kb_name]
         if agent.vector_store_id:
-            import contextlib
-
             for f in agent.list_files():
                 with contextlib.suppress(Exception):
                     self.client.files.delete(file_id=f["id"])
@@ -130,8 +131,10 @@ class KnowledgeOrchestrator:
             result = self.agents[active[0]].query(question)
             return {"answer": result["answer"], "mode": "single", "sources": [result]}
 
-        # Multi-agent: query each KB independently, then synthesize
-        results = [self.agents[name].query(question) for name in active]
+        # Multi-agent: query each KB independently in parallel, then synthesize
+        with ThreadPoolExecutor(max_workers=len(active)) as pool:
+            futures = [pool.submit(self.agents[name].query, question) for name in active]
+            results = [f.result() for f in futures]
         synthesized = self._synthesize(question, results)
         return {"answer": synthesized, "mode": "multi", "sources": results}
 

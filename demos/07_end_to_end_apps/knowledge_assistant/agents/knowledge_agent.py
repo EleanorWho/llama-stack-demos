@@ -6,6 +6,7 @@
 
 from __future__ import annotations
 
+import contextlib
 from io import BytesIO
 
 from ogx_client import OgxClient
@@ -126,8 +127,6 @@ class KnowledgeAgent:
             vector_store_id=self.vector_store_id,
             file_id=file_id,
         )
-        import contextlib
-
         with contextlib.suppress(Exception):
             self.client.files.delete(file_id=file_id)
         self._file_count = max(0, self._file_count - 1)
